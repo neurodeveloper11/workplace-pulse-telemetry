@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workplace-Pulse-Telemetry v1.0 • Fabio Torres</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg-body: #0b0f19;
+      --bg-card: #131b2e;
+      --bg-card-sub: #0f172a;
+      --bg-navbar: rgba(15, 23, 42, 0.95);
+      --border-color: #1e293b;
+      --border-focus: #38bdf8;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-sub: #64748b;
+      --hero-bg: linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(11, 15, 25, 1) 100%);
+      --tab-active-bg: rgba(56, 189, 248, 0.12);
+      --tab-active-color: #38bdf8;
+      --btn-nav-bg: #1e293b;
+      --btn-nav-hover: #334155;
+      --alert-bg: rgba(185, 28, 28, 0.15);
+      --alert-border: #b91c1c;
+      --alert-text: #fecaca;
+      --json-bg: #0a0f1d;
+      --banner-bg: rgba(2, 132, 199, 0.1);
+      --banner-border: #0284c7;
+      --card-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+
+    body.theme-light {
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-card-sub: #f1f5f9;
+      --bg-navbar: rgba(255, 255, 255, 0.96);
+      --border-color: #e2e8f0;
+      --border-focus: #0284c7;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-sub: #64748b;
+      --hero-bg: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+      --tab-active-bg: rgba(2, 132, 199, 0.1);
+      --tab-active-color: #0284c7;
+      --btn-nav-bg: #ffffff;
+      --btn-nav-hover: #f1f5f9;
+      --alert-bg: #fef2f2;
+      --alert-border: #f87171;
+      --alert-text: #991b1b;
+      --json-bg: #f8fafc;
+      --banner-bg: #f0f9ff;
+      --banner-border: #38bdf8;
+      --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a { color: #0284c7; text-decoration: none; }
+    body:not(.theme-light) a { color: #38bdf8; }
+    a:hover { text-decoration: underline; }
+
+    /* Top Navbar */
+    .navbar {
+      background: var(--bg-navbar);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #0284c7, #4f46e5);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3);
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .badge-tag {
+      font-size: 11px;
+      font-weight: 700;
+      background: #0284c7;
+      color: #ffffff;
+      padding: 2px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-nav {
+      background: var(--btn-nav-bg);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 7px 13px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .btn-nav:hover {
+      background: var(--btn-nav-hover);
+      text-decoration: none;
+    }
+    .theme-toggle-btn {
+      background: var(--tab-active-bg);
+      border: 1px solid var(--border-focus);
+      color: var(--tab-active-color);
+      font-weight: 700;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: var(--hero-bg);
+      border-bottom: 1px solid var(--border-color);
+      padding: 24px 20px;
+    }
+    .hero-content {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .hero-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 950px;
+      line-height: 1.6;
+    }
+    .compliance-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid #10b981;
+      color: #059669;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 12px;
+    }
+    body:not(.theme-light) .compliance-pill {
+      color: #34d399;
+    }
+
+    /* Main Container & Tabs */
+    .main-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 22px 20px;
+      flex: 1;
+      width: 100%;
+    }
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 22px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-card-sub);
+    }
+    .tab-btn.active {
+      color: var(--tab-active-color);
+      background: var(--tab-active-bg);
+      border-bottom: 2px solid var(--tab-active-color);
+    }
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Clarification Banner (Benchmark Notice) */
+    .benchmark-notice {
+      background: var(--banner-bg);
+      border: 1px solid var(--banner-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .benchmark-notice-text {
+      flex: 1;
+      min-width: 280px;
+    }
+    .benchmark-badge-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    body:not(.theme-light) .benchmark-badge-title {
+      color: #38bdf8;
+    }
+    .benchmark-notice p {
+      font-size: 13px;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+    .benchmark-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .btn-action-sm {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-action-sm:hover {
+      border-color: var(--border-focus);
+    }
+    .btn-action-primary {
+      background: #0284c7;
+      color: #ffffff;
+      border: none;
+    }
+    .btn-action-primary:hover {
+      background: #0369a1;
+    }
+
+    /* Grid & Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--card-shadow);
+    }
+    .card-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-value {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .card-meta {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .alert-box {
+      background: var(--alert-bg);
+      border: 1px solid var(--alert-border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 22px;
+      color: var(--alert-text);
+    }
+    .alert-box h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .alert-list {
+      list-style-type: none;
+      font-size: 13px;
+    }
+    .alert-list li {
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* Sandbox Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .form-textarea {
+      width: 100%;
+      height: 130px;
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 13px;
+      resize: vertical;
+    }
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8);
+    }
+    .preset-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .preset-chip {
+      background: var(--bg-card-sub);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .preset-chip:hover {
+      border-color: var(--border-focus);
+      color: var(--text-main);
+    }
+
+    .gauge-bar-container {
+      margin-bottom: 12px;
+    }
+    .gauge-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .gauge-track {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-card-sub);
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+    .gauge-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+
+    .json-box {
+      background: var(--json-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: monospace;
+      font-size: 12px;
+      color: #0284c7;
+      max-height: 160px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+    }
+    body:not(.theme-light) .json-box {
+      color: #38bdf8;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 22px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body class="theme-dark">
+
+  <!-- Top Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand-group">
+        <div class="brand-icon">🏢</div>
+        <div>
+          <div class="brand-title">
+            Workplace-Pulse-Telemetry
+            <span class="badge-tag">v1.0</span>
+          </div>
+          <div class="brand-sub">Zero Data Leakage • Telemetría Ocupacional Local-First</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <!-- Theme Switcher Button -->
+        <button id="btn-theme" class="btn-nav theme-toggle-btn" onclick="toggleTheme()">
+          <span id="theme-icon">☀️</span>
+          <span id="theme-text">Blanco Grisáceo</span>
+        </button>
+        <a href="https://github.com/neurodeveloper11/workplace-pulse-telemetry" target="_blank" class="btn-nav">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub Repo
+        </a>
+        <a href="https://www.linkedin.com/in/fabio-torres-39364b258/" target="_blank" class="btn-nav">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          Fabio Torres (LinkedIn)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="hero-content">
+      <h1 class="hero-title">Observabilidad Ocupacional & Detección Temprana de Burnout</h1>
+      <p class="hero-desc">
+        Motor de telemetría lingüística organizacional 100% On-Premise. Cuantifica el riesgo psicosocial, 
+        la seguridad psicológica (Amy Edmondson) y la matriz Demanda-Control de Karasek a partir de comunicaciones corporativas 
+        (Slack, Teams, WhatsApp, correos), garantizando que ningún dato confidencial salga a APIs públicas en la nube.
+      </p>
+      <div class="compliance-pill">
+        🛡️ Cumplimiento Resoluciones 2764/2022 y 2646/2008 (MinTrabajo Colombia) e ISO 45003
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Workspace Tabs -->
+  <main class="main-container">
+    <nav class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('tab-overview', this)">📊 1. Resumen Ejecutivo & Alertas</button>
+      <button class="tab-btn" onclick="switchTab('tab-karasek', this)">🎯 2. Matriz Demanda-Control (Karasek)</button>
+      <button class="tab-btn" onclick="switchTab('tab-edmondson', this)">🧠 3. Seguridad Psicológica (Amy Edmondson)</button>
+      <button class="tab-btn" onclick="switchTab('tab-sandbox', this)">🔬 4. Inspector en Vivo (Zero-Leakage Sandbox)</button>
+      <button class="tab-btn" onclick="switchTab('tab-directives', this)">📋 5. Directivas de Intervención (Res. 2764/2022)</button>
+    </nav>
+
+    <!-- TAB 1: RESUMEN EJECUTIVO -->
+    <div id="tab-overview" class="tab-panel active">
+      <!-- Explication Banner: Explaining why data appears initially -->
+      <div class="benchmark-notice">
+        <div class="benchmark-notice-text">
+          <div class="benchmark-badge-title">
+            <span>ℹ️ ¿CÓMO FUNCIONA ESTE TABLERO?</span>
+          </div>
+          <p>
+            Al iniciar, la plataforma carga una <strong>Auditoría Demostrativa de Referencia (Benchmark de 100 comunicaciones sintéticas)</strong> 
+            evaluadas en 4 células (Ingeniería, Operaciones Portuarias, Laboratorio de IA y Soporte) para ilustrar los semáforos y gráficas. 
+            Puedes <strong>limpiar el tablero</strong> para empezar desde cero o ir al <strong>Inspector en Vivo</strong> para ingresar tus propios mensajes.
+          </p>
+        </div>
+        <div class="benchmark-actions">
+          <button class="btn-action-sm btn-action-primary" onclick="switchTab('tab-sandbox', document.querySelectorAll('.tab-btn')[3])">
+            🔬 Probar Mis Mensajes en Vivo
+          </button>
+          <button id="btn-toggle-data" class="btn-action-sm" onclick="toggleDatasetMode()">
+            🧹 Limpiar / Ver en Blanco
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Grid -->
+      <div class="kpi-grid">
+        <div class="card">
+          <div class="card-title">🔥 Índice de Burnout (OSBI) <span>MBI</span></div>
+          <div class="card-value" style="color: #f43f5e;" id="kpi-burnout">47.2 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span></div>
+          <div class="card-meta">Agotamiento verbal y urgencia temporal</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🛡️ Seguridad Psicológica (PSI) <span>Edmondson</span></div>
+          <div class="card-value" style="color: #10b981;" id="kpi-psi">48.7 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span></div>
+          <div class="card-meta">Vulnerabilidad y ausencia de temor punitivo</div>
+        </div>
+        <div class="card">
+          <div class="card-title">⚡ Fricción Interpersonal (IFCI) <span>Clima</span></div>
+          <div class="card-value" style="color: #f59e0b;" id="kpi-friction">36.0 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span></div>
+          <div class="card-meta">Comunicación pasivo-agresiva vs cohesión</div>
+        </div>
+        <div class="card">
+          <div class="card-title">🔒 Entidades PII Redactadas <span>Zero-Leak</span></div>
+          <div class="card-value" style="color: #0284c7;" id="kpi-pii">184</div>
+          <div class="card-meta">Cédulas, emails, celulares, salarios y IPs protegidos</div>
+        </div>
+      </div>
+
+      <!-- Critical Alerts -->
+      <div id="alerts-container" class="alert-box">
+        <h4>🚨 Alertas Tempranas de Riesgo Ocupacional Inminente</h4>
+        <ul class="alert-list">
+          <li>• <strong>[ENGINEERING-CORE] Riesgo CRÍTICO:</strong> Índice de Burnout en <strong>72.8/100</strong>. El <strong>55%</strong> de los mensajes ocurren fuera de jornada (20:00 - 02:00) por incidentes en producción.</li>
+          <li>• <strong>[PORT-LOGISTICS] Riesgo CRÍTICO:</strong> Fricción Interpersonal en <strong>62.4/100</strong>. Frecuente evasión de responsabilidades (<em>"no es mi trabajo"</em>, <em>"como ya te había dicho"</em>) y baja seguridad psicológica.</li>
+          <li>• <strong>[CUSTOMER-OPERATIONS] Riesgo MODERADO:</strong> Cuadrante Karasek Pasivo. Alta densidad de órdenes rígidas (<em>"es obligatorio"</em>) y desconexión afectiva (<em>"da igual"</em>).</li>
+        </ul>
+      </div>
+
+      <!-- Department Bar Chart -->
+      <div class="card">
+        <div id="plot-department-bars" style="width: 100%; height: 390px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: MATRIZ DE KARASEK -->
+    <div id="tab-karasek" class="tab-panel">
+      <div class="card" style="margin-bottom: 20px;">
+        <h3 style="font-size: 16px; margin-bottom: 8px; color: var(--text-main);">Modelo Demanda-Control de Robert Karasek (Salud Ocupacional)</h3>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+          Cuantifica el riesgo de estrés crónico y somatización cruzando las <strong>Demandas Psicológicas Cuantitativas</strong> (eje Y) 
+          con la <strong>Latitud de Decisión / Autonomía</strong> (eje X). Los equipos en <em>Alta Tensión</em> tienen hasta 3x mayor riesgo de trastornos psicosomáticos y rotación laboral.
+        </p>
+      </div>
+      <div class="card">
+        <div id="plot-karasek" style="width: 100%; height: 500px;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: AMY EDMONDSON RADAR -->
+    <div id="tab-edmondson" class="tab-panel">
+      <div class="two-col">
+        <div class="card">
+          <div id="plot-radar" style="width: 100%; height: 430px;"></div>
+        </div>
+        <div class="card">
+          <h3 style="font-size: 16px; margin-bottom: 12px; color: var(--text-main);">Constructo de Seguridad Psicológica (Dra. Amy Edmondson)</h3>
+          <div style="font-size: 13px; color: var(--text-main); line-height: 1.6; display: flex; flex-direction: column; gap: 14px;">
+            <div>
+              <strong style="color: #0284c7;">1. Admisión Transparente del Error:</strong>
+              <p style="color: var(--text-muted);">En equipos de alto rendimiento (<em>AI-Research-Labs</em>), los ingenieros dicen abiertamente <em>"cometí un error en los datos"</em> sin miedo a represalias punitivas.</p>
+            </div>
+            <div>
+              <strong style="color: #10b981;">2. Indagación Abierta vs Órdenes:</strong>
+              <p style="color: var(--text-muted);">Frecuencia de preguntas reflexivas (<em>"¿qué opinan?", "¿cómo lo ven?"</em>) que abren el disenso constructivo y estimulan la innovación colectiva.</p>
+            </div>
+            <div>
+              <strong style="color: #f59e0b;">3. Higiene Comunicacional:</strong>
+              <p style="color: var(--text-muted);">Ausencia de micropenalizaciones pasivo-agresivas (<em>"favor leer el hilo con atención"</em>) que silencian el feedback en áreas operativas como <em>Port-Logistics</em>.</p>
+            </div>
+            <div>
+              <strong style="color: #8b5cf6;">4. Balance Demanda-Autonomía:</strong>
+              <p style="color: var(--text-muted);">La autonomía protege contra el agotamiento extremo incluso bajo demandas altas (Zona Activa Karasek).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: LIVE SANDBOX ZERO-LEAKAGE -->
+    <div id="tab-sandbox" class="tab-panel">
+      <div class="card" style="margin-bottom: 20px;">
+        <h3 style="font-size: 16px; margin-bottom: 6px; color: var(--text-main);">Inspector en Vivo: Prueba de Anonimización y Telemetría Local</h3>
+        <p style="font-size: 13px; color: var(--text-muted);">
+          Ingresa cualquier texto real o confidencial con nombres, números de cédula, celulares, correos o sueldos. 
+          El motor lo redacta al 100% de forma inmediata y extrae los vectores psicométricos sin enviar datos fuera de tu dispositivo.
+        </p>
+      </div>
+
+      <div class="two-col">
+        <!-- Input Column -->
+        <div class="card">
+          <div class="form-group">
+            <label class="form-label">Mensaje Raw de Entrada (Slack, Teams, WhatsApp, Email)</label>
+            <textarea id="raw-input" class="form-textarea">URGENTE: Se cayó el servidor de pagos en la IP 10.0.1.45. Hola Carlos, llama al celular +57 312 456 7890 del cliente Banco Santander (CC 12345678). Estoy totalmente agotado con este sprint de madrugada, no doy más!</textarea>
+          </div>
+          <button class="btn-primary" onclick="processSandbox()">⚡ Analizar con Telemetría Local-First</button>
+
+          <div style="margin-top: 18px;">
+            <span style="font-size: 12px; color: var(--text-sub); font-weight: 700;">Cargar Ejemplos de Prueba:</span>
+            <div class="preset-group">
+              <span class="preset-chip" onclick="loadPreset(1)">🚨 Incidente Crítico y Burnout</span>
+              <span class="preset-chip" onclick="loadPreset(2)">⚡ Fricción Pasivo-Agresiva</span>
+              <span class="preset-chip" onclick="loadPreset(3)">🌱 Seguridad Psicológica (Edmondson)</span>
+              <span class="preset-chip" onclick="loadPreset(4)">💤 Desconexión y Apatía</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Column -->
+        <div class="card">
+          <div class="form-group">
+            <label class="form-label" style="color: #10b981;">Texto Sanitizado (Zero Data Leakage Output)</label>
+            <div id="clean-output" style="background: var(--bg-card-sub); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; font-size: 13px; color: var(--text-main); min-height: 80px;"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="color: #0284c7;">Entidades PII Detectadas y Enmascaradas</label>
+            <pre id="pii-output" class="json-box"></pre>
+          </div>
+
+          <!-- Score Gauges -->
+          <div style="margin-top: 16px;">
+            <div class="gauge-bar-container">
+              <div class="gauge-label">
+                <span>🔥 Burnout / Estrés Ocupacional (OSBI)</span>
+                <span id="score-burnout-text" style="color: #f43f5e; font-weight: 800;">85.0 / 100</span>
+              </div>
+              <div class="gauge-track"><div id="score-burnout-bar" class="gauge-fill" style="width: 85%; background: #f43f5e;"></div></div>
+            </div>
+
+            <div class="gauge-bar-container">
+              <div class="gauge-label">
+                <span>🛡️ Seguridad Psicológica (PSI)</span>
+                <span id="score-psi-text" style="color: #10b981; font-weight: 800;">35.0 / 100</span>
+              </div>
+              <div class="gauge-track"><div id="score-psi-bar" class="gauge-fill" style="width: 35%; background: #10b981;"></div></div>
+            </div>
+
+            <div class="gauge-bar-container">
+              <div class="gauge-label">
+                <span>⚡ Fricción Interpersonal (IFCI)</span>
+                <span id="score-friction-text" style="color: #f59e0b; font-weight: 800;">25.0 / 100</span>
+              </div>
+              <div class="gauge-track"><div id="score-friction-bar" class="gauge-fill" style="width: 25%; background: #f59e0b;"></div></div>
+            </div>
+
+            <div class="gauge-bar-container">
+              <div class="gauge-label">
+                <span>🎮 Autonomía / Latitud Decisional</span>
+                <span id="score-autonomy-text" style="color: #0284c7; font-weight: 800;">45.0 / 100</span>
+              </div>
+              <div class="gauge-track"><div id="score-autonomy-bar" class="gauge-fill" style="width: 45%; background: #0284c7;"></div></div>
+            </div>
+
+            <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);">
+              <strong>Marcadores Identificados:</strong> <span id="markers-text" style="color: var(--text-main); font-weight: 600;">Exhaustion(1), Urgency(1)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: RESOLUCION 2764/2022 DIRECTIVAS -->
+    <div id="tab-directives" class="tab-panel">
+      <div class="card" style="margin-bottom: 20px;">
+        <h3 style="font-size: 18px; margin-bottom: 10px; color: var(--text-main);">Marco Técnico-Legal: Resolución 2764/2022 (Ministerio del Trabajo de Colombia)</h3>
+        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+          En Colombia, la evaluación y gestión de los factores de riesgo psicosocial intralaboral es obligatoria. 
+          <em>Workplace-Pulse-Telemetry</em> transforma la telemetría en intervenciones preventivas alineadas con los dominios oficiales:
+        </p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="card">
+          <h4 style="color: #f43f5e; font-size: 15px; margin-bottom: 8px;">1. Dominio: Demandas del Trabajo (Carga Cuantitativa y Jornada Laboral)</h4>
+          <p style="font-size: 13px; color: var(--text-main); line-height: 1.6;">
+            • <strong>Evidencia Detectada:</strong> El equipo de <code>Engineering-Core</code> presenta un <strong>55%</strong> de tráfico fuera de horario laboral y un índice de agotamiento de 72.8/100.<br>
+            • <strong>Plan de Acción Directivo:</strong> Establecer barreras automáticas de desconexión digital de 19:00 a 07:00, rediseñar el calendario de guardias para incidentes críticos y auditar cuellos de botella de entrega inmediata.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4 style="color: #f59e0b; font-size: 15px; margin-bottom: 8px;">2. Dominio: Liderazgo y Relaciones Sociales en el Trabajo</h4>
+          <p style="font-size: 13px; color: var(--text-main); line-height: 1.6;">
+            • <strong>Evidencia Detectada:</strong> En <code>Port-Logistics</code>, el índice de fricción alcanza 62.4/100 con alta recurrencia de respuestas pasivo-agresivas (<em>"eso te correspondía a ti"</em>).<br>
+            • <strong>Plan de Acción Directivo:</strong> Taller de alineación de interfaces interdepartamentales y adopción del protocolo de comunicación constructiva sin evasión de responsabilidades.
+          </p>
+        </div>
+
+        <div class="card">
+          <h4 style="color: #0284c7; font-size: 15px; margin-bottom: 8px;">3. Dominio: Control sobre el Trabajo (Autonomía y Participación)</h4>
+          <p style="font-size: 13px; color: var(--text-main); line-height: 1.6;">
+            • <strong>Evidencia Detectada:</strong> El área de <code>Customer-Operations</code> se sitúa en el cuadrante Karasek Pasivo (alta rigidez de mandatos y baja autonomía).<br>
+            • <strong>Plan de Acción Directivo:</strong> Otorgar facultades resolutivas a los operadores para resolver casos de usuarios sin requerir aprobación jerárquica piramidal permanente.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <strong>Workplace-Pulse-Telemetry v1.0</strong> • Diseñado y Desarrollado por <strong>Fabio Torres</strong> (M.Sc. Data Engineering • Psicólogo Especialista en Riesgo Psicosocial)<br>
+    Código abierto en <a href="https://github.com/neurodeveloper11/workplace-pulse-telemetry" target="_blank">GitHub</a> • 
+    Perfil Profesional en <a href="https://www.linkedin.com/in/fabio-torres-39364b258/" target="_blank">LinkedIn</a>
+  </footer>
+
+  <!-- Client-Side Engine & Charts Script -->
+  <script>
+    let isBlankMode = false;
+
+    // Theme Management (Dark vs Blanco Grisáceo)
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('theme-light');
+      localStorage.setItem('wpt-theme', isLight ? 'light' : 'dark');
+      updateThemeButton(isLight);
+
+      // Re-render charts with new theme colors
+      renderDepartmentBars();
+      renderKarasekPlot();
+      renderRadarPlot();
+    }
+
+    function updateThemeButton(isLight) {
+      const btn = document.getElementById('btn-theme');
+      const icon = document.getElementById('theme-icon');
+      const text = document.getElementById('theme-text');
+      if (isLight) {
+        icon.innerText = '🌙';
+        text.innerText = 'Modo Oscuro';
+      } else {
+        icon.innerText = '☀️';
+        text.innerText = 'Blanco Grisáceo';
+      }
+    }
+
+    // Toggle between Benchmark Data and Blank Fresh State
+    function toggleDatasetMode() {
+      isBlankMode = !isBlankMode;
+      const toggleBtn = document.getElementById('btn-toggle-data');
+
+      if (isBlankMode) {
+        toggleBtn.innerText = '🔄 Cargar Benchmark de Ejemplo (100 msgs)';
+        document.getElementById('kpi-burnout').innerHTML = `0.0 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span>`;
+        document.getElementById('kpi-psi').innerHTML = `0.0 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span>`;
+        document.getElementById('kpi-friction').innerHTML = `0.0 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span>`;
+        document.getElementById('kpi-pii').innerText = `0`;
+        document.getElementById('alerts-container').style.display = 'none';
+      } else {
+        toggleBtn.innerText = '🧹 Limpiar / Ver en Blanco';
+        document.getElementById('kpi-burnout').innerHTML = `47.2 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span>`;
+        document.getElementById('kpi-psi').innerHTML = `48.7 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span>`;
+        document.getElementById('kpi-friction').innerHTML = `36.0 <span style="font-size: 15px; color: var(--text-sub);">/ 100</span>`;
+        document.getElementById('kpi-pii').innerText = `184`;
+        document.getElementById('alerts-container').style.display = 'block';
+      }
+      renderDepartmentBars();
+      renderKarasekPlot();
+      renderRadarPlot();
+    }
+
+    // Tab switching
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+
+      if (tabId === 'tab-overview') renderDepartmentBars();
+      if (tabId === 'tab-karasek') renderKarasekPlot();
+      if (tabId === 'tab-edmondson') renderRadarPlot();
+    }
+
+    // Benchmark Data
+    const benchmarkData = {
+      "Engineering-Core": { burnout: 72.8, psi: 41.2, friction: 28.5, demand: 78.0, autonomy: 42.0, quadrant: "High Strain" },
+      "Port-Logistics": { burnout: 45.6, psi: 32.4, friction: 62.4, demand: 54.0, autonomy: 35.0, quadrant: "High Strain / Friction" },
+      "AI-Research-Labs": { burnout: 22.4, psi: 83.2, friction: 11.2, demand: 58.0, autonomy: 78.0, quadrant: "Active" },
+      "Customer-Operations": { burnout: 48.0, psi: 38.0, friction: 42.0, demand: 38.0, autonomy: 32.0, quadrant: "Passive" }
+    };
+
+    function getThemeColors() {
+      const isLight = document.body.classList.contains('theme-light');
+      return {
+        isLight,
+        paper_bgcolor: isLight ? '#ffffff' : '#131b2e',
+        plot_bgcolor: isLight ? '#f8fafc' : '#0f172a',
+        text_color: isLight ? '#0f172a' : '#ffffff',
+        muted_color: isLight ? '#64748b' : '#94a3b8',
+        grid_color: isLight ? '#e2e8f0' : '#1e293b'
+      };
+    }
+
+    function renderDepartmentBars() {
+      const tc = getThemeColors();
+
+      if (isBlankMode) {
+        const layout = {
+          paper_bgcolor: tc.paper_bgcolor,
+          plot_bgcolor: tc.plot_bgcolor,
+          title: { text: '<b>Comparativa de Índices Psicométricos (Sin Datos Cargados)</b>', font: { color: tc.text_color, size: 15 } },
+          annotations: [{ text: 'Tablero en blanco. Utiliza el Inspector en Vivo para analizar mensajes.', showarrow: false, font: { color: tc.muted_color, size: 13 }, x: 0.5, y: 0.5, xref: 'paper', yref: 'paper' }],
+          xaxis: { visible: false },
+          yaxis: { visible: false }
+        };
+        Plotly.newPlot('plot-department-bars', [], layout, { responsive: true, displayModeBar: false });
+        return;
+      }
+
+      const depts = Object.keys(benchmarkData);
+      const burnout = depts.map(d => benchmarkData[d].burnout);
+      const psi = depts.map(d => benchmarkData[d].psi);
+      const friction = depts.map(d => benchmarkData[d].friction);
+
+      const traces = [
+        { name: 'Burnout / Estrés (OSBI)', x: depts, y: burnout, type: 'bar', marker: { color: '#f43f5e' } },
+        { name: 'Seguridad Psicológica (PSI)', x: depts, y: psi, type: 'bar', marker: { color: '#10b981' } },
+        { name: 'Fricción Interpersonal (IFCI)', x: depts, y: friction, type: 'bar', marker: { color: '#f59e0b' } }
+      ];
+
+      const layout = {
+        barmode: 'group',
+        paper_bgcolor: tc.paper_bgcolor,
+        plot_bgcolor: tc.plot_bgcolor,
+        title: {
+          text: '<b>Comparativa de Índices Psicométricos por Departamento</b>',
+          font: { color: tc.text_color, size: 15 },
+          y: 0.96
+        },
+        yaxis: { title: 'Puntuación (0 - 100)', range: [0, 100], gridcolor: tc.grid_color, tickfont: { color: tc.muted_color } },
+        xaxis: { tickfont: { color: tc.text_color, size: 12 }, gridcolor: tc.grid_color },
+        legend: {
+          orientation: 'h',
+          y: 1.12,
+          x: 0.5,
+          xanchor: 'center',
+          font: { color: tc.muted_color }
+        },
+        margin: { l: 50, r: 30, t: 75, b: 45 }
+      };
+
+      Plotly.newPlot('plot-department-bars', traces, layout, { responsive: true, displayModeBar: false });
+    }
+
+    function renderKarasekPlot() {
+      const tc = getThemeColors();
+
+      if (isBlankMode) {
+        const layout = {
+          paper_bgcolor: tc.paper_bgcolor,
+          plot_bgcolor: tc.plot_bgcolor,
+          title: { text: '<b>Matriz Demanda-Control de Karasek (En Blanco)</b>', font: { color: tc.text_color, size: 15 } },
+          annotations: [{ text: 'Esperando nuevos eventos de comunicación...', showarrow: false, font: { color: tc.muted_color, size: 13 }, x: 0.5, y: 0.5, xref: 'paper', yref: 'paper' }],
+          xaxis: { visible: false },
+          yaxis: { visible: false }
+        };
+        Plotly.newPlot('plot-karasek', [], layout, { responsive: true, displayModeBar: false });
+        return;
+      }
+
+      const depts = Object.keys(benchmarkData);
+      const xAutonomy = depts.map(d => benchmarkData[d].autonomy);
+      const yDemand = depts.map(d => benchmarkData[d].demand);
+      const colors = ['#f43f5e', '#fb923c', '#10b981', '#facc15'];
+
+      const trace = {
+        x: xAutonomy,
+        y: yDemand,
+        mode: 'markers+text',
+        text: depts.map(d => `<b>${d}</b>`),
+        textposition: 'top center',
+        textfont: { color: tc.text_color, size: 12 },
+        marker: { size: 18, color: colors, line: { color: tc.isLight ? '#0f172a' : '#ffffff', width: 2 } },
+        type: 'scatter'
+      };
+
+      const layout = {
+        paper_bgcolor: tc.paper_bgcolor,
+        plot_bgcolor: tc.plot_bgcolor,
+        title: { text: '<b>Matriz Demanda-Control de Karasek (Distribución Ocupacional)</b>', font: { color: tc.text_color, size: 15 } },
+        xaxis: { title: 'Latitud de Decisión / Autonomía (0 - 100)', range: [0, 100], gridcolor: tc.grid_color, tickfont: { color: tc.muted_color } },
+        yaxis: { title: 'Demandas Psicológicas y Carga (0 - 100)', range: [0, 100], gridcolor: tc.grid_color, tickfont: { color: tc.muted_color } },
+        shapes: [
+          { type: 'rect', x0: 0, y0: 45, x1: 50, y1: 100, fillcolor: '#ef4444', opacity: tc.isLight ? 0.08 : 0.15, line: { width: 0 } },
+          { type: 'rect', x0: 50, y0: 45, x1: 100, y1: 100, fillcolor: '#10b981', opacity: tc.isLight ? 0.08 : 0.15, line: { width: 0 } },
+          { type: 'rect', x0: 0, y0: 0, x1: 50, y1: 45, fillcolor: '#f59e0b', opacity: tc.isLight ? 0.08 : 0.15, line: { width: 0 } },
+          { type: 'rect', x0: 50, y0: 0, x1: 100, y1: 45, fillcolor: '#3b82f6', opacity: tc.isLight ? 0.08 : 0.15, line: { width: 0 } }
+        ],
+        annotations: [
+          { x: 25, y: 95, text: '<b>🚨 ALTA TENSIÓN</b><br>Riesgo Crítico de Burnout', showarrow: false, font: { color: '#ef4444', size: 11 } },
+          { x: 75, y: 95, text: '<b>🚀 ACTIVO</b><br>Alto Desempeño y Motivación', showarrow: false, font: { color: '#10b981', size: 11 } },
+          { x: 25, y: 10, text: '<b>💤 PASIVO</b><br>Apatía y Desenganche', showarrow: false, font: { color: '#f59e0b', size: 11 } },
+          { x: 75, y: 10, text: '<b>🛡️ BAJA TENSIÓN</b><br>Confort y Estabilidad', showarrow: false, font: { color: '#0284c7', size: 11 } }
+        ],
+        showlegend: false,
+        margin: { l: 50, r: 30, t: 50, b: 50 }
+      };
+
+      Plotly.newPlot('plot-karasek', [trace], layout, { responsive: true, displayModeBar: false });
+    }
+
+    function renderRadarPlot() {
+      const tc = getThemeColors();
+
+      if (isBlankMode) {
+        const layout = {
+          paper_bgcolor: tc.paper_bgcolor,
+          title: { text: '<b>Huella Radar de Resiliencia Psicológica (En Blanco)</b>', font: { color: tc.text_color, size: 15 } },
+          annotations: [{ text: 'Esperando nuevos eventos...', showarrow: false, font: { color: tc.muted_color, size: 13 }, x: 0.5, y: 0.5, xref: 'paper', yref: 'paper' }]
+        };
+        Plotly.newPlot('plot-radar', [], layout, { responsive: true, displayModeBar: false });
+        return;
+      }
+
+      const categories = ['Seguridad Psicológica', 'Autonomía', 'Resistencia Fricción', 'Control Sobrecarga', 'Valencia Prosocial'];
+      const categoriesClosed = [...categories, categories[0]];
+
+      const data = Object.keys(benchmarkData).map((dept, idx) => {
+        const d = benchmarkData[dept];
+        const vals = [
+          d.psi,
+          d.autonomy,
+          Math.max(0, 100 - d.friction),
+          Math.max(0, 100 - d.burnout),
+          Math.min(100, d.psi * 0.9 + (100 - d.friction) * 0.1)
+        ];
+        const colors = ['#f43f5e', '#fb923c', '#10b981', '#0284c7'];
+        return {
+          type: 'scatterpolar',
+          r: [...vals, vals[0]],
+          theta: categoriesClosed,
+          fill: 'toself',
+          name: dept,
+          line: { color: colors[idx % colors.length] },
+          opacity: tc.isLight ? 0.45 : 0.6
+        };
+      });
+
+      const layout = {
+        polar: {
+          radialaxis: { visible: true, range: [0, 100], gridcolor: tc.grid_color, tickfont: { color: tc.muted_color } },
+          bgcolor: tc.plot_bgcolor
+        },
+        paper_bgcolor: tc.paper_bgcolor,
+        title: { text: '<b>Huella Radar de Resiliencia Psicológica Ocupacional</b>', font: { color: tc.text_color, size: 15 }, y: 0.96 },
+        legend: { orientation: 'h', y: 1.15, x: 0.5, xanchor: 'center', font: { color: tc.muted_color } },
+        margin: { l: 40, r: 40, t: 65, b: 40 }
+      };
+
+      Plotly.newPlot('plot-radar', data, layout, { responsive: true, displayModeBar: false });
+    }
+
+    // ==========================================
+    // Client-Side Zero Data Leakage Anonymizer
+    // ==========================================
+    function clientAnonymize(text) {
+      const piiList = [];
+      let sanitized = text;
+
+      // 1. Email
+      const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}\b/g;
+      sanitized = sanitized.replace(emailRegex, (match) => {
+        piiList.push({ type: 'EMAIL', masked_value: '[EMAIL_REDACTED]' });
+        return '[EMAIL_REDACTED]';
+      });
+
+      // 2. Phone
+      const phoneRegex = /(?:\+?57\s*)?(?:\b3\d{2}[\s.-]?\d{3}[\s.-]?\d{4}\b|\b(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}\b)/g;
+      sanitized = sanitized.replace(phoneRegex, (match) => {
+        piiList.push({ type: 'PHONE', masked_value: '[PHONE_REDACTED]' });
+        return '[PHONE_REDACTED]';
+      });
+
+      // 3. National IDs (CC, DNI)
+      const idRegex = /\b(?:CC|C\.C\.|Cédula|Cedula|DNI|Identificación|ID)[\s#:.]*([0-9]{1,3}(?:\.[0-9]{3}){2}|[0-9]{6,10})\b/gi;
+      sanitized = sanitized.replace(idRegex, (match) => {
+        piiList.push({ type: 'GOVERNMENT_ID', masked_value: '[ID_REDACTED]' });
+        return '[ID_REDACTED]';
+      });
+
+      // 4. Financial & Salaries
+      const finRegex = /(?:(?:\$|COP|USD|EUR)\s*[\d]{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})?|\b\d+(?:[.,]\d+)*\s*(?:pesos|dólares|dolares|COP|USD|EUR)\b|\b(?:sueldo|salario|pago|honorarios|bono)\s+(?:de\s+)?[\$]?[\d.,]+(?:\s*(?:millones|mil|k|USD|COP))?\b)/gi;
+      sanitized = sanitized.replace(finRegex, (match) => {
+        piiList.push({ type: 'FINANCIAL_SALARY', masked_value: '[FINANCIAL_REDACTED]' });
+        return '[FINANCIAL_REDACTED]';
+      });
+
+      // 5. IP Addresses
+      const ipRegex = /\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b/g;
+      sanitized = sanitized.replace(ipRegex, (match) => {
+        piiList.push({ type: 'NETWORK_IP', masked_value: '[IP_REDACTED]' });
+        return '[IP_REDACTED]';
+      });
+
+      // 6. Name greetings
+      const greetingRegex = /\b(Hola|Buenos días|Buenas tardes|Estimado|Estimada|Dear|Hi|Hello)\s+([A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s+[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)?)(?=[,\s!?\n]|$)/gi;
+      sanitized = sanitized.replace(greetingRegex, (match, p1, p2) => {
+        if (['equipo', 'todos', 'team', 'all', 'grupo'].includes(p2.toLowerCase())) return match;
+        piiList.push({ type: 'PERSON_NAME', masked_value: '[NAME_REDACTED]' });
+        return `${p1} [NAME_REDACTED]`;
+      });
+
+      return { sanitized, piiList };
+    }
+
+    // ==========================================
+    // Client-Side Telemetry Engine
+    // ==========================================
+    function clientComputeTelemetry(cleanText) {
+      const markers = [];
+      const matchCount = (regex) => (cleanText.match(regex) || []).length;
+
+      const exhaustion = matchCount(/\b(agotad[oa]s?|no doy m[aá]s|quemad[oa]s?|colaps[aoó]ndo?|drenad[oa]s?|sin energ[ií]a|al l[ií]mite|saturad[oa]s?|sobrecarga(?:da)?|insomnio|estr[eé]s|exhausted|burned out|overwhelmed)\b/gi);
+      const urgency = matchCount(/\b(urgente|ya mismo|para ayer|emergencia|asap|apaga(?:ndo)? incendios|inmediat[ao](?:mente)?|ahora mismo|bloqueante|cr[ií]tic[ao]|se cay[oó])\b/gi);
+      const cynicism = matchCount(/\b(da igual|me da lo mismo|qu[eé] m[aá]s da|no me pagan lo suficiente|no es mi problema|hagan lo que quieran|para qu[eé]|no vale la pena)\b/gi);
+      const vulnerability = matchCount(/\b(me equivoqu[eé]|comet[ií] un error|fue mi error|necesito ayuda|no s[eé] c[oó]mo|pido disculpas|i made a mistake)\b/gi);
+      const inquiry = matchCount(/\b(qu[eé] opinan|c[oó]mo lo ven|alguien tiene dudas|sugerencias|qu[eé] riesgos ven|feedback|qu[eé] piensan)\b/gi);
+      const constructive = matchCount(/\b(propongo|otra alternativa|otra perspectiva|y si probamos|desde mi punto de vista)\b/gi);
+      const friction = matchCount(/\b(como ya (?:te )?hab[ií]a dicho|como ya dije|favor leer el hilo|como mencion[eé] antes|otra vez con lo mismo|no vuelvo a repetir|no es mi trabajo|eso te correspond[ií]a)\b/gi);
+      const prosocial = matchCount(/\b(gracias|muchas gracias|gran trabajo|felicitaciones|trabajemos juntos|con gusto|te ayudo|te apoyo)\b/gi);
+      const command = matchCount(/\b(tienes que hacer|debes enviar ya|est[aá] prohibido|es obligatorio|haz lo que digo)\b/gi);
+
+      if (exhaustion) markers.push(`Agotamiento(${exhaustion})`);
+      if (urgency) markers.push(`Urgencia(${urgency})`);
+      if (vulnerability) markers.push(`Vulnerabilidad(${vulnerability})`);
+      if (inquiry) markers.push(`Indagación(${inquiry})`);
+      if (friction) markers.push(`Fricción(${friction})`);
+      if (prosocial) markers.push(`Prosocial(${prosocial})`);
+      if (cynicism) markers.push(`Cinismo(${cynicism})`);
+
+      // Caps words penalty
+      const capsWords = cleanText.split(/\s+/).filter(w => w === w.toUpperCase() && w.length >= 4 && !w.includes('REDACTED'));
+      const capsPenalty = Math.min(25, capsWords.length * 8);
+
+      // 1. Stress OSBI (0 - 100)
+      let stress = 15.0 + (exhaustion * 28) + (urgency * 18) + (cynicism * 22) + capsPenalty - (prosocial * 8);
+      stress = Math.max(0, Math.min(100, Math.round(stress)));
+
+      // 2. Psychological Safety PSI (0 - 100)
+      let psi = 55.0 + (vulnerability * 22) + (inquiry * 16) + (constructive * 14) + (prosocial * 10) - (friction * 25) - (command * 15) - (capsPenalty * 0.5);
+      psi = Math.max(0, Math.min(100, Math.round(psi)));
+
+      // 3. Friction IFCI (0 - 100)
+      let ifci = 10.0 + (friction * 32) + (cynicism * 16) + (command * 14) + (capsPenalty * 0.6) - (prosocial * 15);
+      ifci = Math.max(0, Math.min(100, Math.round(ifci)));
+
+      // 4. Autonomy
+      let autonomy = 45.0 + (constructive * 15) + (inquiry * 10) - (command * 22);
+      autonomy = Math.max(0, Math.min(100, Math.round(autonomy)));
+
+      return { stress, psi, ifci, autonomy, markers };
+    }
+
+    function processSandbox() {
+      const raw = document.getElementById('raw-input').value;
+      if (!raw.trim()) return;
+
+      const { sanitized, piiList } = clientAnonymize(raw);
+      const tele = clientComputeTelemetry(sanitized);
+
+      document.getElementById('clean-output').innerText = sanitized;
+      document.getElementById('pii-output').innerText = JSON.stringify({
+        total_redactions: piiList.length,
+        entities: piiList
+      }, null, 2);
+
+      // Update gauges
+      document.getElementById('score-burnout-text').innerText = `${tele.stress} / 100`;
+      document.getElementById('score-burnout-bar').style.width = `${tele.stress}%`;
+
+      document.getElementById('score-psi-text').innerText = `${tele.psi} / 100`;
+      document.getElementById('score-psi-bar').style.width = `${tele.psi}%`;
+
+      document.getElementById('score-friction-text').innerText = `${tele.ifci} / 100`;
+      document.getElementById('score-friction-bar').style.width = `${tele.ifci}%`;
+
+      document.getElementById('score-autonomy-text').innerText = `${tele.autonomy} / 100`;
+      document.getElementById('score-autonomy-bar').style.width = `${tele.autonomy}%`;
+
+      document.getElementById('markers-text').innerText = tele.markers.length > 0 ? tele.markers.join(', ') : 'Ninguno detectado';
+    }
+
+    function loadPreset(num) {
+      const presets = {
+        1: "URGENTE: Se cayó el cluster de Kubernetes en la IP 10.0.12.44. La pasarela de pagos está rechazada. Llevo 16 horas seguidas en esto, estoy totalmente agotado y con insomnio. No doy más con estos deploys!",
+        2: "Como ya te había dicho en el correo anterior, favor leer el hilo con atención. Otra vez con lo mismo, la orden con DNI 45678901 no es mi trabajo. No vuelvo a repetir.",
+        3: "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repositorio. ¿Qué opinan sobre este enfoque? Muchas gracias por su apoyo.",
+        4: "Da igual el caso del cliente, aquí no me pagan lo suficiente para complicarme la vida. Qué más da si el ticket queda abierto, hagan lo que quieran."
+      };
+      document.getElementById('raw-input').value = presets[num];
+      processSandbox();
+    }
+
+    // Initialize initial charts & restore theme preference
+    window.addEventListener('load', () => {
+      const savedTheme = localStorage.getItem('wpt-theme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('theme-light');
+        updateThemeButton(true);
+      } else {
+        updateThemeButton(false);
+      }
+
+      renderDepartmentBars();
+      processSandbox();
+    });
+  </script>
+</body>
+</html>
