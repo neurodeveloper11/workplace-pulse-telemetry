@@ -1,0 +1,802 @@
+[
+  {
+    "message_id": "LOG-0010",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-08T16:26:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0019",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-08T16:46:00",
+    "text_content": "Da igual el caso del cliente, aquí no me pagan lo suficiente para complicarme la vida.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0009",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-08T17:16:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "ENG-0002",
+    "sender_id": "carlos.dev@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-08T17:36:00",
+    "text_content": "Llevo 16 horas seguidas en esto, estoy totalmente agotado y con insomnio. No doy más con estos deploys de madrugada.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0022",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-08T17:55:00",
+    "text_content": "Como mencioné antes, el operador con DNI 45678901 no tenía turno asignado. Revisen sus listas antes de quejarse.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "AI-0001",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-08T18:08:00",
+    "text_content": "Necesito ayuda entendiendo esta divergencia en la loss de validación. ¿Alguien tiene disponibilidad de 15 min para hacer pair programming?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0021",
+    "sender_id": "david.security@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-08T18:14:00",
+    "text_content": "Son las 23:45 y sigo pegado a la consola. La sobrecarga del sprint nos tiene colapsando a todos los del equipo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0018",
+    "sender_id": "camilo.mlops@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-08T19:15:00",
+    "text_content": "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0008",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-08T20:32:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0005",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-08T20:42:00",
+    "text_content": "Tienes que hacer las llamadas siguiendo estrictamente el guion. Está prohibido salir del libreto sin excepciones.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "SUP-0011",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-08T21:03:00",
+    "text_content": "Me da lo mismo cómo lo resuelvan, hagan lo que quieran con esa solicitud.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0004",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-08T21:08:00",
+    "text_content": "Gran trabajo de todos en el sprint pasado. Resolví el bug de memoria y documenté el aprendizaje para el equipo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0020",
+    "sender_id": "camilo.mlops@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-08T21:54:00",
+    "text_content": "Propongo una alternativa para el pipeline de inferencia. Desde mi punto de vista podríamos ganar un 25% de latencia.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0022",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-08T22:45:00",
+    "text_content": "Tienes que hacer las llamadas siguiendo estrictamente el guion. Está prohibido salir del libreto sin excepciones.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "ENG-0022",
+    "sender_id": "laura.backend@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-08T22:49:00",
+    "text_content": "Son las 23:45 y sigo pegado a la consola. La sobrecarga del sprint nos tiene colapsando a todos los del equipo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0016",
+    "sender_id": "sofia.ethics@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-08T23:20:00",
+    "text_content": "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0019",
+    "sender_id": "roberto.patio@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-08T23:22:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "AI-0015",
+    "sender_id": "sofia.ethics@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-09T00:24:00",
+    "text_content": "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0023",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T00:46:00",
+    "text_content": "Es obligatorio registrar cada minuto de pausa en la plataforma. Sin excepciones para nadie.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "SUP-0009",
+    "sender_id": "soporte1@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T01:05:00",
+    "text_content": "No vale la pena proponer cambios, aquí todo se hace siempre igual por orden de la gerencia.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0002",
+    "sender_id": "camilo.mlops@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-09T01:36:00",
+    "text_content": "Propongo una alternativa para el pipeline de inferencia. Desde mi punto de vista podríamos ganar un 25% de latencia.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0006",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T01:58:00",
+    "text_content": "Tienes que hacer las llamadas siguiendo estrictamente el guion. Está prohibido salir del libreto sin excepciones.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0015",
+    "sender_id": "roberto.patio@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-09T02:12:00",
+    "text_content": "Eso no me corresponde a mí. Hablen con el jefe de patio si tienen algún reclamo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "ENG-0019",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-09T04:40:00",
+    "text_content": "Revisé el PR #402. Tienes que aprobarlo de inmediato para salir a prod ahora mismo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0006",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-09T07:53:00",
+    "text_content": "CRÍTICO: El webhook de pagos no responde. @andrea.lead por favor confirma si el servidor 192.168.4.10 fue reiniciado.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0002",
+    "sender_id": "claudia.aduanas@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-09T15:46:00",
+    "text_content": "No me vengan a pedir favores a última hora. Si el transportador no llegó a tiempo, no es mi problema.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0017",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T17:49:00",
+    "text_content": "Es obligatorio registrar cada minuto de pausa en la plataforma. Sin excepciones para nadie.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0024",
+    "sender_id": "roberto.patio@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-09T18:49:00",
+    "text_content": "Eso no me corresponde a mí. Hablen con el jefe de patio si tienen algún reclamo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "AI-0025",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-09T18:55:00",
+    "text_content": "Decidí refactorizar el módulo de embeddings con total autonomía. ¿Cómo lo ven para la demo del viernes?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0017",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-09T19:05:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0002",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T19:32:00",
+    "text_content": "Haz lo que te digo y no discutas las órdenes de supervisión. Tienes que cumplir la meta hoy.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0023",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-09T19:57:00",
+    "text_content": "Muchas gracias por la revisión detallada @sofia.ethics, excelente aporte sobre las métricas de equidad.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0001",
+    "sender_id": "soporte1@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T20:00:00",
+    "text_content": "Es obligatorio registrar cada minuto de pausa en la plataforma. Sin excepciones para nadie.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "ENG-0001",
+    "sender_id": "carlos.dev@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-09T20:39:00",
+    "text_content": "URGENTE: Se cayó el cluster de Kubernetes en la IP 10.0.12.44. La pasarela de pagos está rechazada. Necesitamos apagar este incendio ya!",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0018",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T20:45:00",
+    "text_content": "Debes enviar ya las 50 encuestas. Es obligatorio cerrar el turno con la cuota completa.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0021",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-09T21:13:00",
+    "text_content": "Necesito ayuda entendiendo esta divergencia en la loss de validación. ¿Alguien tiene disponibilidad de 15 min para hacer pair programming?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0009",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-09T22:35:00",
+    "text_content": "Decidí refactorizar el módulo de embeddings con total autonomía. ¿Cómo lo ven para la demo del viernes?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0013",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-09T23:13:00",
+    "text_content": "Da igual el caso del cliente, aquí no me pagan lo suficiente para complicarme la vida.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "SUP-0024",
+    "sender_id": "soporte1@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-10T00:13:00",
+    "text_content": "Es obligatorio registrar cada minuto de pausa en la plataforma. Sin excepciones para nadie.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0005",
+    "sender_id": "claudia.aduanas@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-10T00:19:00",
+    "text_content": "Como mencioné antes, el operador con DNI 45678901 no tenía turno asignado. Revisen sus listas antes de quejarse.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "AI-0017",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-10T01:06:00",
+    "text_content": "Decidí refactorizar el módulo de embeddings con total autonomía. ¿Cómo lo ven para la demo del viernes?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0013",
+    "sender_id": "david.security@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-10T02:14:00",
+    "text_content": "Son las 23:45 y sigo pegado a la consola. La sobrecarga del sprint nos tiene colapsando a todos los del equipo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0012",
+    "sender_id": "carlos.dev@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-10T06:00:00",
+    "text_content": "Otro rollback de emergencia... El cliente Banco Santander (CC 98765432) está llamando a quejarse al celular +57 312 456 7890.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0004",
+    "sender_id": "laura.backend@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-10T09:22:00",
+    "text_content": "Estoy saturada de alertas en PagerDuty. Llevo 3 fines de semana sin descansar. Me siento al límite.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0012",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-10T18:37:00",
+    "text_content": "Propongo una alternativa para el pipeline de inferencia. Desde mi punto de vista podríamos ganar un 25% de latencia.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0010",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-10T19:59:00",
+    "text_content": "Necesito ayuda entendiendo esta divergencia en la loss de validación. ¿Alguien tiene disponibilidad de 15 min para hacer pair programming?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0003",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-10T20:35:00",
+    "text_content": "No vale la pena proponer cambios, aquí todo se hace siempre igual por orden de la gerencia.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "SUP-0015",
+    "sender_id": "soporte3@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-10T20:44:00",
+    "text_content": "Tienes que hacer las llamadas siguiendo estrictamente el guion. Está prohibido salir del libreto sin excepciones.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0006",
+    "sender_id": "sofia.ethics@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-10T20:47:00",
+    "text_content": "Muchas gracias por la revisión detallada @sofia.ethics, excelente aporte sobre las métricas de equidad.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0013",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-10T21:16:00",
+    "text_content": "Decidí refactorizar el módulo de embeddings con total autonomía. ¿Cómo lo ven para la demo del viernes?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0005",
+    "sender_id": "carlos.dev@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-10T22:40:00",
+    "text_content": "Otro rollback de emergencia... El cliente Banco Santander (CC 98765432) está llamando a quejarse al celular +57 312 456 7890.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0023",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-10T22:49:00",
+    "text_content": "Como mencioné antes, el operador con DNI 45678901 no tenía turno asignado. Revisen sus listas antes de quejarse.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0012",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-10T23:15:00",
+    "text_content": "No vale la pena proponer cambios, aquí todo se hace siempre igual por orden de la gerencia.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "ENG-0018",
+    "sender_id": "laura.backend@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-10T23:45:00",
+    "text_content": "Estoy saturada de alertas en PagerDuty. Llevo 3 fines de semana sin descansar. Me siento al límite.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0024",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-11T00:22:00",
+    "text_content": "Propongo una alternativa para el pipeline de inferencia. Desde mi punto de vista podríamos ganar un 25% de latencia.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0007",
+    "sender_id": "camilo.mlops@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-11T00:51:00",
+    "text_content": "Propongo una alternativa para el pipeline de inferencia. Desde mi punto de vista podríamos ganar un 25% de latencia.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0019",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-11T01:40:00",
+    "text_content": "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0014",
+    "sender_id": "sofia.ethics@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-11T02:02:00",
+    "text_content": "Muchas gracias por la revisión detallada @sofia.ethics, excelente aporte sobre las métricas de equidad.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0008",
+    "sender_id": "david.security@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-11T03:07:00",
+    "text_content": "Llevo 16 horas seguidas en esto, estoy totalmente agotado y con insomnio. No doy más con estos deploys de madrugada.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0014",
+    "sender_id": "felipe.infra@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-11T04:56:00",
+    "text_content": "URGENTE: Se cayó el cluster de Kubernetes en la IP 10.0.12.44. La pasarela de pagos está rechazada. Necesitamos apagar este incendio ya!",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0009",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-11T05:36:00",
+    "text_content": "Llevo 16 horas seguidas en esto, estoy totalmente agotado y con insomnio. No doy más con estos deploys de madrugada.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0016",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-11T09:40:00",
+    "text_content": "Revisé el PR #402. Tienes que aprobarlo de inmediato para salir a prod ahora mismo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0001",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T15:38:00",
+    "text_content": "Hagan lo que quieran con ese embarque, pero dejen de mandar correos innecesarios que saturan la bandeja.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "LOG-0003",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T17:19:00",
+    "text_content": "Otra vez con lo mismo. No vuelvo a repetir que la autorización de la DIAN para la Cédula 12.345.678 te correspondía a ti.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "LOG-0018",
+    "sender_id": "roberto.patio@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T17:48:00",
+    "text_content": "As per my last email, la grúa 4 estaba bloqueada. No traten de culpar al turno de patio por su falta de planeación.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0010",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-11T18:13:00",
+    "text_content": "Me da lo mismo cómo lo resuelvan, hagan lo que quieran con esa solicitud.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0008",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-11T18:35:00",
+    "text_content": "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0014",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T20:58:00",
+    "text_content": "Otra vez con lo mismo. No vuelvo a repetir que la autorización de la DIAN para la Cédula 12.345.678 te correspondía a ti.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "LOG-0013",
+    "sender_id": "roberto.patio@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T21:43:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0021",
+    "sender_id": "soporte2@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-11T22:46:00",
+    "text_content": "No vale la pena proponer cambios, aquí todo se hace siempre igual por orden de la gerencia.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0021",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T23:01:00",
+    "text_content": "As per my last email, la grúa 4 estaba bloqueada. No traten de culpar al turno de patio por su falta de planeación.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0020",
+    "sender_id": "soporte3@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-11T23:11:00",
+    "text_content": "Debes enviar ya las 50 encuestas. Es obligatorio cerrar el turno con la cuota completa.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0004",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-11T23:41:00",
+    "text_content": "As per my last email, la grúa 4 estaba bloqueada. No traten de culpar al turno de patio por su falta de planeación.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0016",
+    "sender_id": "soporte3@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-11T23:59:00",
+    "text_content": "Me da lo mismo cómo lo resuelvan, hagan lo que quieran con esa solicitud.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "ENG-0020",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-12T00:09:00",
+    "text_content": "Estoy saturada de alertas en PagerDuty. Llevo 3 fines de semana sin descansar. Me siento al límite.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "AI-0005",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-12T01:51:00",
+    "text_content": "¿Qué opinan sobre probar este nuevo optimizador? Me gustaría escuchar sus sugerencias y ver qué riesgos identifican.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0007",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-12T02:03:00",
+    "text_content": "Me da lo mismo cómo lo resuelvan, hagan lo que quieran con esa solicitud.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0006",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-12T02:12:00",
+    "text_content": "No me vengan a pedir favores a última hora. Si el transportador no llegó a tiempo, no es mi problema.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "LOG-0016",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-12T02:52:00",
+    "text_content": "Como ya te había dicho en el correo anterior, ese contenedor no es mi trabajo. Favor leer el hilo con atención.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "ENG-0017",
+    "sender_id": "felipe.infra@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-12T08:47:00",
+    "text_content": "Otro rollback de emergencia... El cliente Banco Santander (CC 98765432) está llamando a quejarse al celular +57 312 456 7890.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0020",
+    "sender_id": "mario.despachos@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-12T15:36:00",
+    "text_content": "Como ya te había dicho en el correo anterior, ese contenedor no es mi trabajo. Favor leer el hilo con atención.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "LOG-0012",
+    "sender_id": "roberto.patio@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-12T18:17:00",
+    "text_content": "Hola Claudia, favor prestar más atención cuando generes la guía al celular 300 765 4321. Siempre toca corregirles todo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "LOG-0011",
+    "sender_id": "claudia.aduanas@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-12T18:48:00",
+    "text_content": "Otra vez con lo mismo. No vuelvo a repetir que la autorización de la DIAN para la Cédula 12.345.678 te correspondía a ti.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "AI-0003",
+    "sender_id": "mateo.nlp@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-12T19:14:00",
+    "text_content": "¿Qué opinan sobre probar este nuevo optimizador? Me gustaría escuchar sus sugerencias y ver qué riesgos identifican.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0008",
+    "sender_id": "soporte1@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-12T19:47:00",
+    "text_content": "No vale la pena proponer cambios, aquí todo se hace siempre igual por orden de la gerencia.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0011",
+    "sender_id": "sofia.ethics@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-12T22:13:00",
+    "text_content": "Equipo, cometí un error en el preprocesamiento del dataset de entrenamiento. Pido disculpas, ya lo corregí en el repo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "LOG-0007",
+    "sender_id": "claudia.aduanas@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-12T22:38:00",
+    "text_content": "Eso no me corresponde a mí. Hablen con el jefe de patio si tienen algún reclamo.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "SUP-0004",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-12T23:14:00",
+    "text_content": "Me da lo mismo cómo lo resuelvan, hagan lo que quieran con esa solicitud.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "AI-0022",
+    "sender_id": "elena.scientist@neuroai.org",
+    "department": "AI-Research-Labs",
+    "timestamp": "2026-09-13T00:10:00",
+    "text_content": "Necesito ayuda entendiendo esta divergencia en la loss de validación. ¿Alguien tiene disponibilidad de 15 min para hacer pair programming?",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0007",
+    "sender_id": "felipe.infra@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-13T00:38:00",
+    "text_content": "Son las 23:45 y sigo pegado a la consola. La sobrecarga del sprint nos tiene colapsando a todos los del equipo.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "SUP-0025",
+    "sender_id": "supervisor.calidad@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-13T00:58:00",
+    "text_content": "Es obligatorio registrar cada minuto de pausa en la plataforma. Sin excepciones para nadie.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "SUP-0014",
+    "sender_id": "soporte3@servicios.com",
+    "department": "Customer-Operations",
+    "timestamp": "2026-09-13T01:50:00",
+    "text_content": "Da igual el caso del cliente, aquí no me pagan lo suficiente para complicarme la vida.",
+    "channel": "internal_chat"
+  },
+  {
+    "message_id": "LOG-0025",
+    "sender_id": "jorge.operaciones@puertocargo.co",
+    "department": "Port-Logistics",
+    "timestamp": "2026-09-13T03:05:00",
+    "text_content": "Como ya te había dicho en el correo anterior, ese contenedor no es mi trabajo. Favor leer el hilo con atención.",
+    "channel": "teams"
+  },
+  {
+    "message_id": "ENG-0003",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-13T04:43:00",
+    "text_content": "Favor enviar ya mismo el hotfix a producción sin excepciones. El salario de $12.000.000 COP que pagan aquí no compensa este estrés.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0025",
+    "sender_id": "laura.backend@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-13T06:20:00",
+    "text_content": "Favor enviar ya mismo el hotfix a producción sin excepciones. El salario de $12.000.000 COP que pagan aquí no compensa este estrés.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0015",
+    "sender_id": "felipe.infra@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-13T08:51:00",
+    "text_content": "Llevo 16 horas seguidas en esto, estoy totalmente agotado y con insomnio. No doy más con estos deploys de madrugada.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0023",
+    "sender_id": "david.security@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-13T09:47:00",
+    "text_content": "Otro rollback de emergencia... El cliente Banco Santander (CC 98765432) está llamando a quejarse al celular +57 312 456 7890.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0024",
+    "sender_id": "laura.backend@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-14T04:50:00",
+    "text_content": "Otro rollback de emergencia... El cliente Banco Santander (CC 98765432) está llamando a quejarse al celular +57 312 456 7890.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0011",
+    "sender_id": "felipe.infra@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-14T05:48:00",
+    "text_content": "Otro rollback de emergencia... El cliente Banco Santander (CC 98765432) está llamando a quejarse al celular +57 312 456 7890.",
+    "channel": "slack"
+  },
+  {
+    "message_id": "ENG-0010",
+    "sender_id": "andrea.lead@paygate.io",
+    "department": "Engineering-Core",
+    "timestamp": "2026-09-14T08:24:00",
+    "text_content": "Llevo 16 horas seguidas en esto, estoy totalmente agotado y con insomnio. No doy más con estos deploys de madrugada.",
+    "channel": "slack"
+  }
+]

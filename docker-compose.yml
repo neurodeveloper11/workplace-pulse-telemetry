@@ -1,0 +1,12 @@
+services:
+  workplace-pulse-telemetry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: workplace_pulse_telemetry
+    ports:
+      - "7860:7860"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SALT=enterprise_workplace_salt_2026
+    restart: unless-stopped

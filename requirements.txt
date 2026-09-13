@@ -1,0 +1,5 @@
+pydantic>=2.6.0
+gradio>=6.0.0
+plotly>=5.18.0
+pandas>=2.1.0
+pytest>=8.0.0
