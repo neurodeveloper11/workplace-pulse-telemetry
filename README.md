@@ -235,4 +235,6 @@ In Colombia, the **Ministerio del Trabajo** enforces the mandatory administratio
 *Lead Psychologist & Data Engineer («Del Diván al Dato»)*  
 - **GitHub:** [@neurodeveloper11](https://github.com/neurodeveloper11)  
 - **Hugging Face:** [@neurodeveloper](https://huggingface.co/neurodeveloper)  
+- **LinkedIn:** [Fabio Torres](https://www.linkedin.com/in/fabio-torres-39364b258)  
+- **Email:** psicologofabiotorres@gmail.com  
 - **Specialty:** Behavioral Telemetry, AI Alignment, Occupational Psychometrics, Cloud Infrastructure  
