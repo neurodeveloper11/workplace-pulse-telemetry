@@ -1,25 +1,30 @@
-# 🏢 Workplace-Pulse-Telemetry: Local-First Occupational Telemetry & Burnout Detection Platform
+# 🏢 Workplace-Pulse-Telemetry v2.0: Local-First Hierarchical Document Ingestion & Occupational Telemetry Platform
 
 [![CI](https://github.com/neurodeveloper11/workplace-pulse-telemetry/actions/workflows/ci.yml/badge.svg)](https://github.com/neurodeveloper11/workplace-pulse-telemetry/actions)
-[![Hugging Face Spaces](https://img.shields.io/badge/Hugging_Face-Live_Demo_v1.0-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/spaces/neurodeveloper/workplace-pulse-telemetry)
+[![Hugging Face Spaces](https://img.shields.io/badge/Hugging_Face-Live_Demo_v2.0-FFD21E?style=flat-square&logo=huggingface&logoColor=black)](https://huggingface.co/spaces/neurodeveloper/workplace-pulse-telemetry)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![Pydantic v2](https://img.shields.io/badge/Pydantic-v2_Strict-E92063?style=flat-square&logo=pydantic&logoColor=white)](https://pydantic.dev)
+[![Multi-Format Support](https://img.shields.io/badge/Formats-PDF%20%7C%20DOCX%20%7C%20XLSX%20%7C%20CSV%20%7C%20EML%20%7C%20TXT-38BDF8?style=flat-square)](https://github.com/neurodeveloper11/workplace-pulse-telemetry)
 [![Docker Ready](https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
 [![Resolution 2764/2022](https://img.shields.io/badge/Compliance-Res._2764%2F2022-10B981?style=flat-square)](https://www.mintrabajo.gov.co)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
 
-An enterprise-grade, **Zero Data Leakage** occupational telemetry and behavioral NLP engine engineered to audit organizational climate, detect early signs of **burnout & verbal fatigue**, quantify **psychological safety**, and map teams into the **Karasek Demand-Control Matrix** directly on-premise without ever sending sensitive employee communications to external cloud APIs.
+An enterprise-grade, **Zero Data Leakage** occupational telemetry and behavioral NLP engine engineered to audit organizational climate, detect early signs of **burnout & verbal fatigue**, quantify **psychological safety**, and map teams into the **Karasek Demand-Control Matrix** directly on-premise without ever sending sensitive employee communications or corporate archives to external cloud APIs.
 
-Designed and engineered by **[Fabio Torres](https://github.com/neurodeveloper11)** (M.Sc. Candidate in Data Engineering & Cloud Infrastructure • 10+ Years Directing Psychosocial Risk Batteries for 1,500+ Port Terminal Workers in Colombia).
+Designed and engineered by **[Fabio Torres](https://github.com/neurodeveloper11)** (Lead Psychologist & Data Engineer • 10+ Years Directing Psychosocial Risk Batteries for 1,500+ Port Terminal Workers in Colombia • M.Sc. in Data Engineering & Cloud Infrastructure).
 
 ---
 
 ## 🧠 The Domain Moat: «Del Diván al Dato» (Bridging Clinical Rigor with High-Throughput Engineering)
 
-Enterprise HR and leadership teams urgently need to detect workload collapse, toxic communication, and burnout before high-value talent resigns or suffers psychosomatic illness. However, **sending raw internal communications (Slack, Microsoft Teams, WhatsApp, emails) to public LLM APIs (OpenAI, Anthropic) introduces unacceptable legal and financial liabilities**:
-- **Habeas Data & Privacy Regulations:** GDPR, HIPAA, and Colombian Statutory Law 1581 of 2012 prohibit transmitting unconsented employee PII.
-- **Corporate Espionage & IP Leaks:** Financial transactions, client names, server IPs, and internal roadmaps would be exposed.
-- **Superficial Sentiment Analysis:** Generic cloud sentiment APIs classify `"me equivoqué"` (admitting an error) as "negative sentiment", when in organizational psychology it is the ultimate hallmark of **high psychological safety** (Amy Edmondson).
+In real-world enterprises (ports, hospitals, banks, engineering firms), workplace climate and psychosocial risk signals are not confined to Slack or Teams chats. Critical organizational evidence is scattered across **hundreds of multi-format documents**:
+- **COPASST and Workplace Harassment Committee Minutes (Actas de Convivencia):** Multi-page `.docx` and `.pdf` files.
+- **Incident Reports, Disciplinary Hearings & Employee Complaints:** Scanned or generated `.pdf` and `.txt` files.
+- **Shift Logs, Overtime Registries & Duty Rosters:** Spreadsheets in `.xlsx` and `.csv` format.
+- **Archived Managerial Communications & Urgent Escalations:** Email archives in `.eml` and `.msg` format.
+- **Complex Nested Folder Hierarchies:** e.g., `Enterprise/Port_Operations/2026/Committee_Minutes/minute_march.docx`.
+
+Companies **cannot upload these folders to public cloud LLMs** due to trade secrets and strict privacy laws (Habeas Data Colombian Law 1581 of 2012, GDPR, HIPAA). **Workplace-Pulse-Telemetry v2.0 executes 100% On-Premise / Local-First**, processing entire folder trees and ZIP archives with Zero Data Leakage.
 
 ```mermaid
 graph TD
@@ -30,17 +35,20 @@ graph TD
         D4["Robert Karasek Job Demand-Control Model (JDCM)"]
     end
 
-    subgraph DataEngineering ["Modern Data Engineering & NLP Pipeline"]
-        E1["Deterministic Salted Anonymization Engine (<2ms)"]
-        E2["Vectorized Lexical-Syntactic Telemetry (Zero Cloud GPU)"]
-        E3["Pydantic v2 Strict Data Contracts & Schema Validation"]
-        E4["Gradio 6 + Plotly Executive Telemetry Dashboard"]
+    subgraph DataEngineering ["v2.0 Hierarchical Data Engineering Pipeline"]
+        E1["Recursive Hierarchy & ZIP Scanner (Path Metadata Inference)"]
+        E2["Multi-Format Parser (PDF, DOCX, XLSX, CSV, EML, TXT)"]
+        E3["Semantic Discursive Chunker (Interventions & Agenda Units)"]
+        E4["Deterministic Salted Anonymization Engine (<2ms)"]
+        E5["Vectorized Lexical-Syntactic Telemetry (Zero Cloud GPU)"]
+        E6["Gradio 6 + Plotly Executive Telemetry Dashboard"]
     end
 
     subgraph BusinessImpact ["Enterprise Impact & Risk Shield"]
         B1["100% On-Premise / Zero Data Leakage Security"]
-        B2["Early Burnout & After-Hours Intrusion Alarms"]
-        B3["Audit-Ready Psychosocial Risk Interventions"]
+        B2["Bulk Auditing of Corporate Archives & Folders"]
+        B3["Early Burnout & After-Hours Intrusion Alarms"]
+        B4["Audit-Ready Psychosocial Risk Interventions (Res. 2764/2022)"]
     end
 
     RegulatoryAndDomain --> BusinessImpact
@@ -53,41 +61,59 @@ graph TD
 
 ---
 
-## 🔄 End-to-End System Architecture
+## 🔄 End-to-End System Architecture (v2.0)
 
 ```mermaid
-flowchart LR
-    subgraph Ingestion ["Ingestion Boundary"]
-        A["Raw Enterprise Messages<br/>(Slack, Teams, WhatsApp, Email)"]
+flowchart TD
+    subgraph InputLayer ["Enterprise Inputs (Local-First Boundary)"]
+        A1["Nested Folder Tree<br/>(e.g., Operaciones/2026/Actas/)"]
+        A2["Bulk ZIP Archives<br/>(Company_Audit_2026.zip)"]
+        A3["Loose Multi-Format Files<br/>(.docx, .pdf, .xlsx, .csv, .eml, .txt)"]
     end
 
-    subgraph PrivacyGate ["Zero-Leakage Local Privacy Gate"]
-        B["Local Regex & Heuristic PII Extractor<br/>(Emails, Phones, IDs, Financial, IPs)"]
-        C["SHA-256 Salted Pseudonymizer<br/>User_A91F"]
-        B --> C
+    subgraph ScannerParser ["Hierarchy Scanning & Extraction"]
+        B["HierarchyScanner<br/>(Path Tokenizer & Metadata Inference)"]
+        C["LocalDocumentParser<br/>(pypdf, python-docx, pandas+openpyxl, email)"]
+        A1 & A2 & A3 --> B
+        B -->|ScannedDocumentItems| C
     end
 
-    subgraph Telemetry ["Occupational Telemetry Engine"]
-        D["Burnout & Stress Index (OSBI)<br/>0 - 100"]
-        E["Psychological Safety Index (PSI)<br/>0 - 100"]
-        F["Friction & Climate Index (IFCI)<br/>0 - 100"]
-        G["Karasek Demand-Control Quadrant<br/>High Strain | Active | Low Strain | Passive"]
+    subgraph ChunkerAnonymizer ["Discursive Segmentation & Privacy Gate"]
+        D["DiscursiveChunker<br/>(Speaker Turns, Agenda Points, Shift Rows)"]
+        E["LocalAnonymizer (Zero Data Leakage)<br/>(Redacts CC/DNI, Emails, Phones, Salaries, IPs, Salutations)"]
+        C -->|ExtractedDocument| D
+        D -->|RawMessage Stream| E
     end
 
-    subgraph Aggregator ["Organizational Analytics"]
-        H["Department Pulse Aggregation"]
-        I["Time-Series & After-Hours Traffic Ratio"]
-        J["Early Risk Alerts & Res. 2764/2022 Directives"]
+    subgraph TelemetryAnalytics ["Psychometric Telemetry & Aggregation"]
+        F["OccupationalTelemetryEngine<br/>(OSBI Burnout, Edmondson PSI, IFCI Friction, Karasek)"]
+        G["BatchDocumentPipeline & Analytics<br/>(ExecutiveReport, DepartmentPulse, File Summaries)"]
+        E -->|SanitizedMessages| F
+        F --> G
     end
 
-    A --> B
-    C --> D
-    C --> E
-    C --> F
-    C --> G
-    D & E & F & G --> H
-    H --> I --> J
+    subgraph Visualization ["Executive UI (Gradio 6 + Plotly)"]
+        H["📁 Ingesta Masiva de Documentos & Carpetas (v2.0)"]
+        I["📊 Resumen Ejecutivo & Benchmark"]
+        J["🎯 Matriz Demanda-Control (Karasek)"]
+        K["🧠 Radar de Seguridad Psicológica (Edmondson)"]
+        L["🔬 Playground Zero-Leakage & Directivas Res. 2764/2022"]
+        G --> H & I & J & K & L
+    end
 ```
+
+---
+
+## 📂 Multi-Format Ingestion Capabilities
+
+| Formato | Motor Local | Metadatos Extraídos | Tipo de Segmentación Discursiva |
+|---|---|---|---|
+| **Word (`.docx`)** | `python-docx` | Título, autor, fecha de creación, encabezados, tablas estructuradas. | Intervenciones por orador (`Presidente:`, `Carlos:`) y compromisos numerados. |
+| **PDF (`.pdf`)** | `pypdf` | Metadatos PDF, páginas, tablas de texto. | Paginación, secciones de hechos y descargos. |
+| **Excel (`.xlsx`)** | `pandas` + `openpyxl` | Múltiples hojas, nombres de columnas, fechas y autores de fila. | Filas narrativas con justificaciones de horas extra y bitácoras de incidentes. |
+| **CSV (`.csv`)** | `pandas` con autoseparador | Codificación robusta (`utf-8`, `latin1`, `cp1252`), filas de texto libre. | Un registro tabular por fila con contexto departamental. |
+| **Emails (`.eml`)** | Python Standard `email` | `From`, `To`, `Date`, `Subject`, cuerpo `text/plain`. | Encabezado de auditoría + cuerpo segmentado por párrafos. |
+| **Texto (`.txt`)** | I/O Nativo | Párrafos y memos descriptivos. | Ventanas deslizantes controladas (150-250 palabras) con solapamiento. |
 
 ---
 
@@ -120,116 +146,76 @@ Categorizes teams into 4 operational quadrants:
 
 ---
 
-## 🛡️ Benchmark Telemetry Across 4 Corporate Archetypes
-
-| Department / Archetype | Messages | Burnout (OSBI) | Psych Safety (PSI) | Friction (IFCI) | After-Hours | Karasek Quadrant | Risk Level |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **`Engineering-Core`** (Crunch / Outages) | 25 | **72.8** | 41.2 | 28.5 | **55%** | **High Strain** | 🚨 **CRITICAL** |
-| **`Port-Logistics`** (Blame-Shifting / Friction) | 25 | 45.6 | 32.4 | **62.4** | 8% | **Passive / Strain** | 🚨 **CRITICAL** |
-| **`AI-Research-Labs`** (High Psychological Safety) | 25 | **22.4** | **83.2** | **11.2** | 0% | **Active** | 🟢 **LOW** |
-| **`Customer-Operations`** (Micromanagement / Apathy)| 25 | 48.0 | 38.0 | 42.0 | 4% | **Passive** | 🟡 **MODERATE** |
-
----
-
-## 🚀 Quickstart & Local Installation
-
-### Option 1: Run with Docker Compose (Recommended for On-Premise)
+## 🧪 Rigorous Automated Testing Suite (35 Tests, 100% Pass)
 
 ```bash
-git clone https://github.com/neurodeveloper11/workplace-pulse-telemetry.git
-cd workplace-pulse-telemetry
-docker-compose up --build
-```
-Open your browser at `http://localhost:7860`.
+$ python -m pytest
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0
+rootdir: D:\hoja_vida\projects_github\workplace-pulse-telemetry
+plugins: anyio-4.15.1, dash-4.2.0
+collected 35 items
 
-### Option 2: Run with Python 3.10+ Virtual Environment
+tests/test_analytics.py ....                                             [ 11%]
+tests/test_anonymizer.py ........                                        [ 34%]
+tests/test_batch_pipeline.py ..                                          [ 40%]
+tests/test_chunker.py ....                                               [ 51%]
+tests/test_document_parser.py .....                                      [ 65%]
+tests/test_hierarchy_scanner.py ....                                     [ 77%]
+tests/test_schemas.py ...                                                [ 85%]
+tests/test_synthetic_generator.py .                                      [ 88%]
+tests/test_telemetry.py ....                                             [100%]
 
-```bash
-# 1. Clone repository
-git clone https://github.com/neurodeveloper11/workplace-pulse-telemetry.git
-cd workplace-pulse-telemetry
-
-# 2. Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Run test suite
-python -m pytest -v --tb=short
-
-# 5. Launch dashboard
-python app.py
+============================= 35 passed in 0.76s ==============================
 ```
 
 ---
 
-## 🧪 Automated Testing Suite (Pytest)
-
-The project includes **20 exhaustive unit tests** verifying schema strictness, zero-leakage PII elimination, mathematical boundary enforcement ($[0, 100]$), and regulatory heuristics:
-
-```bash
-python -m pytest -v --tb=short
-```
-
-Output:
-```text
-tests/test_analytics.py::test_karasek_quadrant_logic PASSED              [  5%]
-tests/test_analytics.py::test_risk_level_evaluation PASSED               [ 10%]
-tests/test_analytics.py::test_department_aggregation PASSED              [ 15%]
-tests/test_analytics.py::test_executive_report_generation PASSED         [ 20%]
-tests/test_anonymizer.py::test_email_redaction PASSED                    [ 25%]
-tests/test_anonymizer.py::test_phone_redaction_colombia_and_international PASSED [ 30%]
-tests/test_anonymizer.py::test_national_id_redaction PASSED              [ 35%]
-tests/test_anonymizer.py::test_financial_and_salary_redaction PASSED     [ 40%]
-tests/test_anonymizer.py::test_ip_address_redaction PASSED               [ 45%]
-tests/test_anonymizer.py::test_greeting_names_and_mentions PASSED        [ 50%]
-tests/test_anonymizer.py::test_pseudonym_consistency PASSED              [ 55%]
-tests/test_anonymizer.py::test_full_message_anonymization PASSED         [ 60%]
-tests/test_schemas.py::test_raw_message_valid PASSED                     [ 65%]
-tests/test_schemas.py::test_message_telemetry_bounds_validation PASSED   [ 70%]
-tests/test_schemas.py::test_department_pulse_creation PASSED             [ 75%]
-tests/test_synthetic_generator.py::test_synthetic_generator_dataset_composition PASSED [ 80%]
-tests/test_telemetry.py::test_burnout_and_urgency_detection PASSED       [ 85%]
-tests/test_telemetry.py::test_amy_edmondson_psychological_safety PASSED  [ 90%]
-tests/test_telemetry.py::test_interpersonal_friction_passive_aggression PASSED [ 95%]
-tests/test_telemetry.py::test_telemetry_bounds_guarantee PASSED          [100%]
-
-============================= 20 passed in 0.11s ==============================
-```
-
----
-
-## 🗂️ Repository Structure
+## 🗂️ Repository Structure (v2.0)
 
 ```text
 workplace-pulse-telemetry/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                 # GitHub Actions CI matrix (Py 3.10-3.13)
+│       └── ci.yml                     # GitHub Actions CI matrix (Py 3.10-3.13)
 ├── data/
-│   └── synthetic_workplace_logs.json # 100 multi-archetype benchmark events
+│   ├── synthetic_workplace_logs.json # 100 benchmark events
+│   ├── create_sample_corpus.py        # Generates realistic mock files (DOCX, PDF, XLSX, EML, TXT)
+│   └── sample_documents/              # Enterprise directory hierarchy and demo ZIP bundle
+│       ├── Operaciones_Portuarias/2026/Actas_Comite/acta_convivencia_marzo_2026.docx
+│       ├── Finanzas_Contabilidad/2026/Auditorias/informe_auditoria_financiera_2026.pdf
+│       ├── Ingenieria_Core/2026/Bitacoras/bitacora_guardias_incidentes.xlsx
+│       ├── Comite_Convivencia_SST/2026/Emails/alerta_friccion_turno_nocturno.eml
+│       ├── Atencion_Cliente/2026/Quejas/descargo_solicitud_apoyo.txt
+│       └── auditoria_organizacional_2026_demo.zip
 ├── src/
 │   ├── __init__.py
-│   ├── schemas.py                 # Pydantic v2 data models & validation
-│   ├── anonymizer.py              # Zero-leakage local PII redaction engine
-│   ├── telemetry_engine.py        # Psychometric NLP engine (Maslach, Edmondson, Karasek)
-│   ├── synthetic_generator.py     # Multi-department synthetic log generator
-│   └── analytics.py               # Organizational aggregator & HR directives
+│   ├── schemas.py                     # Pydantic v2 data models & validation
+│   ├── hierarchy_scanner.py           # Recursive folder & ZIP scanner + metadata inference
+│   ├── document_parser.py             # Multi-format parser (PDF, DOCX, XLSX, CSV, EML, TXT)
+│   ├── chunker.py                     # Semantic & discursive segmentation engine
+│   ├── batch_pipeline.py              # Batch ingestion & end-to-end orchestrator
+│   ├── anonymizer.py                  # Zero-leakage local PII redaction engine
+│   ├── telemetry_engine.py            # Psychometric NLP engine (Maslach, Edmondson, Karasek)
+│   ├── synthetic_generator.py         # Multi-department synthetic log generator
+│   └── analytics.py                   # Organizational aggregator & HR directives
 ├── tests/
 │   ├── __init__.py
 │   ├── test_schemas.py
-│   ├── test_anonymizer.py
-│   ├── test_telemetry.py
+│   ├── test_hierarchy_scanner.py      # Path parsing, zip extraction, security checks
+│   ├── test_document_parser.py        # PDF, Word, Excel, CSV, Email extraction tests
+│   ├── test_chunker.py                # Discursive turn splitting & windowing tests
+│   ├── test_batch_pipeline.py         # End-to-end batch integration tests
+│   ├── test_anonymizer.py             # SHA-256 salted pseudonymization & PII redaction tests
+│   ├── test_telemetry.py              # Psychometric bounds and marker detection tests
 │   ├── test_synthetic_generator.py
-│   └── test_analytics.py
-├── app.py                         # Interactive Gradio 6 + Plotly dashboard
-├── Dockerfile                     # Optimized container image
-├── docker-compose.yml             # Single-command local deployment
-├── requirements.txt               # Pinned dependencies
-├── LICENSE                        # MIT License
-└── README.md                      # Architecture, theory, and operational guide
+│   └── test_analytics.py              # Karasek quadrants and executive report tests
+├── app.py                             # Interactive Gradio 6 + Plotly v2.0 Dashboard
+├── Dockerfile                         # Optimized production container image
+├── docker-compose.yml                 # Single-command local deployment
+├── requirements.txt                   # Pinned dependencies (including python-docx, pypdf, openpyxl)
+├── LICENSE                            # MIT License
+└── README.md                          # Comprehensive architecture and operational documentation
 ```
 
 ---

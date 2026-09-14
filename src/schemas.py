@@ -15,6 +15,7 @@ class ChannelType(str, Enum):
     EMAIL = "email"
     WHATSAPP = "whatsapp"
     INTERNAL_CHAT = "internal_chat"
+    DOCUMENT = "document"
 
 
 class RiskLevel(str, Enum):
@@ -110,3 +111,59 @@ class ExecutiveReport(BaseModel):
     regulatory_framework_summary: str = Field(
         default="Alineado con los dominios de la Resolución 2764/2022 (Colombia) y directrices ISO 45003:2021 de Gestión del Riesgo Psicosocial."
     )
+
+
+class ScannedDocumentItem(BaseModel):
+    """Represents a discovered document in a local directory or uncompressed archive."""
+    file_path: str = Field(..., description="Ruta absoluta o temporal del archivo")
+    relative_path: str = Field(..., description="Ruta relativa conservando la jerarquía de carpetas")
+    file_name: str = Field(..., description="Nombre del archivo con extensión")
+    file_extension: str = Field(..., description="Extensión normalizada en minúsculas (ej: .pdf, .docx)")
+    department: str = Field(..., description="Departamento o área inferida heurísticamente")
+    team_unit: Optional[str] = Field(default=None, description="Célula o sub-equipo detectado")
+    year_or_period: Optional[str] = Field(default=None, description="Año o período inferido de la ruta")
+    file_size_bytes: int = Field(default=0, description="Tamaño del archivo en bytes")
+
+
+class DocumentChunk(BaseModel):
+    """Represents a semantically coherent discursive unit extracted from a multi-page document."""
+    chunk_id: str = Field(..., description="Identificador único del fragmento")
+    file_path: str = Field(..., description="Ruta de origen del documento")
+    file_name: str = Field(..., description="Nombre del documento original")
+    department: str = Field(..., description="Departamento asociado")
+    section_title: Optional[str] = Field(default=None, description="Título o punto del orden del día / sección")
+    speaker: Optional[str] = Field(default=None, description="Interlocutor, autor o rol detectado en la intervención")
+    timestamp: datetime = Field(..., description="Fecha del evento o del documento")
+    text_content: str = Field(..., description="Contenido de texto crudo del fragmento")
+    chunk_type: str = Field(default="discursive_unit", description="Tipo de segmento (agenda_item, intervention, complaint, etc.)")
+    word_count: int = Field(default=0, description="Cantidad de palabras del fragmento")
+
+
+class DocumentProcessingSummary(BaseModel):
+    """Audit summary for an individual document processed through the pipeline."""
+    file_name: str
+    relative_path: str
+    department: str
+    file_type: str
+    chunks_count: int = 0
+    pii_redacted_count: int = 0
+    avg_burnout_score: float = 0.0
+    avg_psychological_safety: float = 100.0
+    avg_friction_score: float = 0.0
+    risk_level: RiskLevel = RiskLevel.LOW
+    status: str = "success"
+
+
+class BatchIngestionResult(BaseModel):
+    """Consolidated outcome of batch document ingestion and hierarchical analysis."""
+    batch_id: str
+    processed_at: datetime = Field(default_factory=datetime.now)
+    total_files_discovered: int
+    total_files_processed: int
+    total_chunks_extracted: int
+    total_pii_redacted: int
+    file_type_breakdown: Dict[str, int]
+    department_breakdown: Dict[str, int]
+    file_summaries: List[DocumentProcessingSummary]
+    executive_report: ExecutiveReport
+

@@ -1,15 +1,17 @@
 """
-Workplace-Pulse-Telemetry v1.0 - Interactive Hugging Face Space & Local-First Platform
+Workplace-Pulse-Telemetry v2.0 - Interactive Hugging Face Space & Local-First Platform
 Engineered by Fabio Torres (neurodeveloper11)
-Bilingual Occupational Behavioral Telemetry, Early Burnout Detection & Zero Data Leakage Platform
+Bilingual Occupational Behavioral Telemetry, Hierarchical Multi-Format Ingestion & Zero Data Leakage Platform
 """
 
 import json
 import os
+from pathlib import Path
 from datetime import datetime
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Tuple, Optional
 
 import gradio as gr
+import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
@@ -22,6 +24,9 @@ from src.schemas import (
     ChannelType,
     KarasekQuadrant,
     RiskLevel,
+    BatchIngestionResult,
+    ScannedDocumentItem,
+    DocumentProcessingSummary,
 )
 from src.anonymizer import LocalAnonymizer
 from src.telemetry_engine import OccupationalTelemetryEngine
@@ -30,11 +35,18 @@ from src.analytics import (
     generate_executive_report,
 )
 from src.synthetic_generator import SyntheticWorkplaceLogGenerator
+from src.batch_pipeline import BatchDocumentPipeline
 
 # Initialize global core singletons
 anonymizer = LocalAnonymizer(salt="workplace_pulse_demo_salt_2026")
 telemetry_engine = OccupationalTelemetryEngine()
 generator = SyntheticWorkplaceLogGenerator(seed=42)
+batch_pipeline = BatchDocumentPipeline(salt="workplace_pulse_demo_salt_2026")
+
+# Sample demo ZIP path
+SAMPLE_ZIP_PATH = os.path.join(
+    os.path.dirname(__file__), "data", "sample_documents", "auditoria_organizacional_2026_demo.zip"
+)
 
 # Load pre-generated benchmark logs or generate fallback
 DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "synthetic_workplace_logs.json")
@@ -54,7 +66,6 @@ if os.path.exists(DATA_FILE):
         ]
 else:
     benchmark_raw = generator.generate_full_dataset(25)
-
 
 # Precompute benchmark report
 sanitized_benchmark = anonymizer.anonymize_batch(benchmark_raw)
@@ -86,7 +97,7 @@ def create_department_comparison_chart(report: ExecutiveReport) -> go.Figure:
         paper_bgcolor='#0f172a',
         plot_bgcolor='#1e293b',
         title="<b>Comparativa Psicométrica Multidepartamental</b>",
-        title_font=dict(size=16, color="#f8fafc"),
+        title_font=dict(size=15, color="#f8fafc"),
         yaxis=dict(title="Puntuación Indexada (0 - 100)", range=[0, 100], gridcolor='#334155'),
         xaxis=dict(gridcolor='#334155'),
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
@@ -100,14 +111,10 @@ def create_karasek_matrix_chart(report: ExecutiveReport) -> go.Figure:
     """2D interactive scatter plot of the Karasek Job Demand-Control Model."""
     fig = go.Figure()
 
-    # Add 4 quadrant colored backgrounds
-    # High Strain: Demand >= 45, Autonomy < 50
+    # Quadrant colored backgrounds
     fig.add_shape(type="rect", x0=0, y0=45, x1=50, y1=100, fillcolor="#ef4444", opacity=0.15, layer="below", line_width=0)
-    # Active: Demand >= 45, Autonomy >= 50
     fig.add_shape(type="rect", x0=50, y0=45, x1=100, y1=100, fillcolor="#10b981", opacity=0.15, layer="below", line_width=0)
-    # Passive: Demand < 45, Autonomy < 50
     fig.add_shape(type="rect", x0=0, y0=0, x1=50, y1=45, fillcolor="#f59e0b", opacity=0.15, layer="below", line_width=0)
-    # Low Strain: Demand < 45, Autonomy >= 50
     fig.add_shape(type="rect", x0=50, y0=0, x1=100, y1=45, fillcolor="#3b82f6", opacity=0.15, layer="below", line_width=0)
 
     # Quadrant annotations
@@ -116,8 +123,7 @@ def create_karasek_matrix_chart(report: ExecutiveReport) -> go.Figure:
     fig.add_annotation(x=25, y=10, text="<b>💤 PASIVO (PASSIVE)</b><br>Apatía & Desenganche (Boreout)", showarrow=False, font=dict(color="#fde68a", size=11))
     fig.add_annotation(x=75, y=10, text="<b>🛡️ BAJA TENSIÓN (LOW STRAIN)</b><br>Confort & Operación Estable", showarrow=False, font=dict(color="#93c5fd", size=11))
 
-    # Add department markers
-    colors = ['#f43f5e', '#38bdf8', '#a855f7', '#fb923c']
+    colors = ['#f43f5e', '#38bdf8', '#a855f7', '#fb923c', '#34d399', '#fbbf24']
     for idx, (dept, pulse) in enumerate(report.department_pulses.items()):
         fig.add_trace(go.Scatter(
             x=[pulse.avg_autonomy],
@@ -147,7 +153,7 @@ def create_karasek_matrix_chart(report: ExecutiveReport) -> go.Figure:
         yaxis=dict(title="Demandas Psicológicas y Carga (0 - 100)", range=[0, 100], gridcolor='#334155'),
         showlegend=False,
         margin=dict(l=50, r=50, t=60, b=50),
-        height=480
+        height=460
     )
     return fig
 
@@ -161,7 +167,7 @@ def create_radar_safety_chart(report: ExecutiveReport) -> go.Figure:
     categories_closed = categories + [categories[0]]
 
     fig = go.Figure()
-    colors = ['#38bdf8', '#f43f5e', '#10b981', '#f59e0b']
+    colors = ['#38bdf8', '#f43f5e', '#10b981', '#f59e0b', '#a855f7']
 
     for idx, (dept, pulse) in enumerate(report.department_pulses.items()):
         inv_friction = max(0.0, 100.0 - pulse.avg_friction)
@@ -202,6 +208,199 @@ def create_radar_safety_chart(report: ExecutiveReport) -> go.Figure:
     return fig
 
 
+def create_file_type_donut_chart(breakdown: Dict[str, int]) -> go.Figure:
+    """Donut chart depicting file types ingested in the batch."""
+    labels = list(breakdown.keys()) if breakdown else ["Ninguno"]
+    values = list(breakdown.values()) if breakdown else [1]
+
+    palette = ['#38bdf8', '#818cf8', '#c084fc', '#fb7185', '#34d399', '#fbbf24']
+
+    fig = go.Figure(data=[
+        go.Pie(
+            labels=[l.upper() for l in labels],
+            values=values,
+            hole=0.55,
+            marker=dict(colors=palette[:len(labels)]),
+            textinfo='label+percent',
+            hovertemplate="<b>%{label}</b>: %{value} archivos (%{percent})<extra></extra>"
+        )
+    ])
+    fig.update_layout(
+        template='plotly_dark',
+        paper_bgcolor='#0f172a',
+        plot_bgcolor='#1e293b',
+        title="<b>Distribución por Formato de Archivo</b>",
+        title_font=dict(size=14, color="#f8fafc"),
+        legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
+        margin=dict(l=20, r=20, t=40, b=30),
+        height=320
+    )
+    return fig
+
+
+# ==============================================================================
+# Batch Document Processing Controller
+# ==============================================================================
+
+def format_batch_results_to_df(summaries: List[DocumentProcessingSummary]) -> pd.DataFrame:
+    """Converts processing summaries into a user-friendly presentation DataFrame."""
+    rows = []
+    for s in summaries:
+        risk_tag = {
+            RiskLevel.CRITICAL: "🔴 Crítico",
+            RiskLevel.HIGH: "🟠 Alto",
+            RiskLevel.MODERATE: "🟡 Moderado",
+            RiskLevel.LOW: "🟢 Bajo",
+        }.get(s.risk_level, "⚪ Bajo")
+
+        rows.append({
+            "Archivo": s.file_name,
+            "Departamento": s.department.replace("_", " "),
+            "Formato": s.file_type.upper(),
+            "Fragmentos (Chunks)": s.chunks_count,
+            "PII Redactada": s.pii_redacted_count,
+            "Burnout (OSBI)": f"{s.avg_burnout_score:.1f}",
+            "Seguridad (PSI)": f"{s.avg_psychological_safety:.1f}",
+            "Fricción (IFCI)": f"{s.avg_friction_score:.1f}",
+            "Semáforo Riesgo": risk_tag,
+            "Estado": s.status
+        })
+
+    if not rows:
+        return pd.DataFrame(columns=[
+            "Archivo", "Departamento", "Formato", "Fragmentos (Chunks)",
+            "PII Redactada", "Burnout (OSBI)", "Seguridad (PSI)",
+            "Fricción (IFCI)", "Semáforo Riesgo", "Estado"
+        ])
+
+    return pd.DataFrame(rows)
+
+
+def run_batch_ingestion(
+    files_input: Optional[List[Any]],
+    folder_path: str,
+    custom_salt: str
+) -> Tuple[str, pd.DataFrame, go.Figure, go.Figure, str, str]:
+    """
+    Main handler for bulk document ingestion.
+    Supports uploaded files, ZIP bundles, or local directory paths.
+    """
+    salt_val = custom_salt.strip() if custom_salt else "workplace_pulse_demo_salt_2026"
+    pipeline = BatchDocumentPipeline(salt=salt_val)
+
+    # 1. Determine execution mode
+    try:
+        if files_input:
+            # Check if single zip uploaded
+            if len(files_input) == 1 and str(files_input[0]).lower().endswith(".zip"):
+                zip_path = files_input[0]
+                result = pipeline.process_zip(zip_path)
+            else:
+                # Multiple or single non-zip files
+                scanned_items = []
+                for f in files_input:
+                    file_path_str = str(f)
+                    p = Path(file_path_str)
+                    ext = p.suffix.lower()
+                    dept, unit, year = pipeline.scanner.infer_metadata_from_path(p.name, full_path=file_path_str)
+                    scanned_items.append(
+                        ScannedDocumentItem(
+                            file_path=file_path_str,
+                            relative_path=p.name,
+                            file_name=p.name,
+                            file_extension=ext,
+                            department=dept,
+                            team_unit=unit,
+                            year_or_period=year,
+                            file_size_bytes=p.stat().st_size if p.exists() else 0
+                        )
+                    )
+                result = pipeline.process_scanned_items(scanned_items)
+
+        elif folder_path and folder_path.strip():
+            target_dir = folder_path.strip().strip('"').strip("'")
+            if not os.path.isdir(target_dir):
+                raise ValueError(f"La ruta ingresada no es un directorio válido: {target_dir}")
+            result = pipeline.process_directory(target_dir)
+
+        else:
+            # Default fallback: process sample corpus ZIP
+            if os.path.exists(SAMPLE_ZIP_PATH):
+                result = pipeline.process_zip(SAMPLE_ZIP_PATH)
+            else:
+                raise ValueError("No se subió ningún archivo ni se especificó una ruta válida.")
+
+    except Exception as e:
+        error_md = f'<div class="alert-card"><b>⚠️ Error durante la ingesta documental:</b> {str(e)}</div>'
+        empty_df = pd.DataFrame()
+        empty_fig = go.Figure()
+        return error_md, empty_df, empty_fig, empty_fig, "", ""
+
+    # 2. Build Status Metrics Cards HTML
+    status_html = f"""
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 16px;">
+        <div class="metric-card">
+            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Archivos Analizados</div>
+            <div style="font-size: 1.8rem; font-weight: 700; color: #38bdf8;">{result.total_files_processed} / {result.total_files_discovered}</div>
+        </div>
+        <div class="metric-card">
+            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Fragmentos Semánticos</div>
+            <div style="font-size: 1.8rem; font-weight: 700; color: #818cf8;">{result.total_chunks_extracted}</div>
+        </div>
+        <div class="metric-card">
+            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Entidades PII Redactadas</div>
+            <div style="font-size: 1.8rem; font-weight: 700; color: #34d399;">{result.total_pii_redacted}</div>
+        </div>
+        <div class="metric-card">
+            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Burnout Promedio Lote</div>
+            <div style="font-size: 1.8rem; font-weight: 700; color: #f43f5e;">{result.executive_report.organization_burnout_index:.1f} / 100</div>
+        </div>
+        <div class="metric-card">
+            <div style="font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">Seguridad Psicológica</div>
+            <div style="font-size: 1.8rem; font-weight: 700; color: #10b981;">{result.executive_report.organization_psych_safety_index:.1f} / 100</div>
+        </div>
+    </div>
+    """
+
+    # 3. Build Audit Table
+    df_table = format_batch_results_to_df(result.file_summaries)
+
+    # 4. Build Visual Charts
+    fig_donut = create_file_type_donut_chart(result.file_type_breakdown)
+    fig_dept = create_department_comparison_chart(result.executive_report)
+
+    # 5. Build Alerts HTML
+    if result.executive_report.critical_alerts:
+        alerts_list = "\n".join([f"<li>{a}</li>" for a in result.executive_report.critical_alerts])
+        alerts_html = f"""
+        <div class="alert-card">
+            <b>🚨 ALERTAS DE RIESGO IDENTIFICADAS EN EL LOTE:</b>
+            <ul style="margin-top: 8px; margin-bottom: 0; padding-left: 20px;">{alerts_list}</ul>
+        </div>
+        """
+    else:
+        alerts_html = '<div class="info-box"><b>✅ Sin alertas críticas detectadas:</b> Los documentos procesados se mantienen dentro de los umbrales saludables de clima laboral.</div>'
+
+    # 6. Build Directives & Recommendations
+    all_recs = []
+    for dept_name, pulse in result.executive_report.department_pulses.items():
+        for rec in pulse.key_recommendations:
+            all_recs.append(f"<b>[{dept_name.replace('_', ' ')}]</b>: {rec}")
+
+    recs_md = "\n\n".join([f"- {r}" for r in all_recs]) if all_recs else "No se requieren intervenciones prioritarias en este momento."
+
+    return status_html, df_table, fig_donut, fig_dept, alerts_html, recs_md
+
+
+def load_sample_zip_demo() -> Tuple[str, pd.DataFrame, go.Figure, go.Figure, str, str]:
+    """Helper that runs the sample audit bundle directly."""
+    return run_batch_ingestion(
+        files_input=None,
+        folder_path="",
+        custom_salt="workplace_pulse_demo_salt_2026"
+    )
+
+
 # ==============================================================================
 # Live Playground & Message Processing
 # ==============================================================================
@@ -215,11 +414,9 @@ def analyze_single_message_live(text_input: str, custom_salt: str) -> Tuple[str,
             "0.0", "0.0", "0.0", "0.0", "0.0"
         )
 
-    # 1. Local Anonymization
     local_anon = LocalAnonymizer(salt=custom_salt if custom_salt else "workplace_pulse_demo_salt_2026")
     clean_text, pii_entities = local_anon.anonymize_text(text_input)
 
-    # 2. Package into SanitizedMessage
     now = datetime.now()
     sanitized = SanitizedMessage(
         message_id="LIVE-001",
@@ -227,15 +424,13 @@ def analyze_single_message_live(text_input: str, custom_salt: str) -> Tuple[str,
         department="Live-Sandbox",
         timestamp=now,
         sanitized_content=clean_text,
-        channel=ChannelType.SLACK,
+        channel=ChannelType.DOCUMENT,
         pii_removed_count=len(pii_entities),
         detected_pii=pii_entities
     )
 
-    # 3. Psychometric Telemetry
     telemetry = telemetry_engine.compute_telemetry(sanitized)
 
-    # 4. Format PII JSON
     pii_summary = {
         "total_redactions": len(pii_entities),
         "entities": [
@@ -292,6 +487,8 @@ CUSTOM_CSS = """
     color: #fecaca;
     font-size: 0.95rem;
     line-height: 1.5;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .info-box {
     background: #0f172a;
@@ -303,28 +500,105 @@ CUSTOM_CSS = """
 }
 """
 
-with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
+with gr.Blocks(title="Workplace-Pulse-Telemetry v2.0 | Fabio Torres") as demo:
 
     with gr.Row(elem_classes=["header-box"]):
         with gr.Column(scale=1):
             gr.Markdown(
                 """
-                # 🏢 Workplace-Pulse-Telemetry `v1.0`
-                ### **Plataforma Local-First de Telemetría Ocupacional, Clima Laboral & Detección Temprana de Burnout**
-                **Arquitectura On-Premise con Cero Fuga de Datos (Zero Data Leakage)**  
+                # 🏢 Workplace-Pulse-Telemetry `v2.0`
+                ### **Plataforma Local-First de Ingesta Jerárquica Documental, Telemetría Ocupacional & Detección de Burnout**
+                **Arquitectura On-Premise con Cero Fuga de Datos (Zero Data Leakage) para Actas, Reportes, Hojas de Cálculo y Correos**  
                 *Diseñado y Desarrollado por **Fabio Torres** (`neurodeveloper11` en GitHub / `neurodeveloper` en Hugging Face)*  
                 *Psicólogo Especialista con 10+ años en Riesgo Psicosocial (Res. 2764/2022 y 2646/2008) • M.Sc. en Ingeniería de Datos (UTEL)*
                 """
             )
 
     with gr.Tabs():
+
         # -------------------------------------------------------------
-        # TAB 1: RESUMEN EJECUTIVO & PULSO ORGANIZACIONAL
+        # TAB 1: INGESTA MASIVA MULTI-FORMATO (V2.0 CORE)
         # -------------------------------------------------------------
-        with gr.TabItem("📊 1. Resumen Ejecutivo & Alertas"):
+        with gr.TabItem("📁 1. Ingesta Masiva de Documentos & Carpetas (v2.0)"):
+            gr.Markdown(
+                """
+                ### 🚀 Motor de Ingesta Jerárquica On-Premise
+                Sube una carpeta comprimida en **ZIP** con la estructura corporativa de tu organización (`[Departamento]/[Año]/[Archivo]`) 
+                o arrastra archivos sueltos en formatos **Word (`.docx`), PDF (`.pdf`), Excel (`.xlsx`), CSV (`.csv`), Correos (`.eml`) o Memos (`.txt`)**.  
+                *El motor inferirá automáticamente el departamento, segmentará actas extensas por intervenciones y redactará toda la PII sensible.*
+                """
+            )
+
+            with gr.Row():
+                with gr.Column(scale=2):
+                    file_input = gr.File(
+                        label="Arrastra aquí tus archivos (.pdf, .docx, .xlsx, .csv, .eml, .txt) o un archivo comprimido .ZIP",
+                        file_count="multiple",
+                        file_types=[".pdf", ".docx", ".xlsx", ".csv", ".eml", ".txt", ".zip"]
+                    )
+                    folder_input = gr.Textbox(
+                        label="O ingresa una Ruta de Directorio Local en el Servidor (On-Premise Path)",
+                        placeholder="Ejemplo: D:/Empresa/Operaciones_Portuarias/2026/Auditorias",
+                        lines=1
+                    )
+                    salt_box = gr.Textbox(
+                        label="Sal Criptográfica Local (Salt)",
+                        value="workplace_pulse_demo_salt_2026",
+                        type="password"
+                    )
+
+                    with gr.Row():
+                        btn_run_batch = gr.Button("⚡ Procesar Estructura Documental", variant="primary")
+                        btn_load_demo = gr.Button("🧪 Cargar Caso Demo Completo (ZIP)", variant="secondary")
+
+                with gr.Column(scale=3):
+                    batch_status_cards = gr.HTML(
+                        """
+                        <div class="info-box">
+                            <b>💡 Listo para procesar:</b> Haz clic en <b>"Cargar Caso Demo Completo (ZIP)"</b> para auditar en 1 segundo 
+                            un lote real de 5 departamentos portuarios y financieros, o sube tus propios archivos confidenciales.
+                        </div>
+                        """
+                    )
+
+            gr.Markdown("### 📋 Auditoría Detallada Archivo por Archivo")
+            audit_dataframe = gr.Dataframe(
+                label="Inventario de Archivos Procesados, PII Redactada y Semáforo de Riesgo",
+                wrap=True,
+                headers=["Archivo", "Departamento", "Formato", "Fragmentos (Chunks)", "PII Redactada", "Burnout (OSBI)", "Seguridad (PSI)", "Fricción (IFCI)", "Semáforo Riesgo", "Estado"]
+            )
+
             with gr.Row():
                 with gr.Column(scale=1):
-                    gr.Markdown("### 🔍 Métricas Globales del Clima Corporativo")
+                    batch_donut_chart = gr.Plot(label="Distribución de Formatos")
+                with gr.Column(scale=2):
+                    batch_dept_chart = gr.Plot(label="Comparativa Psicométrica del Lote")
+
+            batch_alerts_box = gr.HTML()
+
+            with gr.Accordion("🏛️ Directivas de Intervención Recomendadas para el Lote (Res. 2764/2022)", open=False):
+                batch_recommendations_box = gr.Markdown("Presiona procesar para generar las directivas personalizadas.")
+
+            # Bind actions
+            btn_run_batch.click(
+                fn=run_batch_ingestion,
+                inputs=[file_input, folder_input, salt_box],
+                outputs=[batch_status_cards, audit_dataframe, batch_donut_chart, batch_dept_chart, batch_alerts_box, batch_recommendations_box]
+            )
+
+            btn_load_demo.click(
+                fn=load_sample_zip_demo,
+                inputs=[],
+                outputs=[batch_status_cards, audit_dataframe, batch_donut_chart, batch_dept_chart, batch_alerts_box, batch_recommendations_box]
+            )
+
+        # -------------------------------------------------------------
+        # TAB 2: RESUMEN EJECUTIVO & BENCHMARK ORGANIZACIONAL
+        # -------------------------------------------------------------
+        with gr.TabItem("📊 2. Resumen Ejecutivo & Benchmark"):
+            with gr.Row():
+                with gr.Column(scale=1):
+                    gr.Markdown("### 🔍 Métricas Globales del Clima Corporativo (Benchmark)")
                     with gr.Row():
                         m1 = gr.Number(label="🔥 Índice de Burnout (OSBI)", value=executive_report_benchmark.organization_burnout_index, precision=1)
                         m2 = gr.Number(label="🛡️ Seguridad Psicológica (PSI)", value=executive_report_benchmark.organization_psych_safety_index, precision=1)
@@ -340,9 +614,9 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
                     dept_chart = gr.Plot(value=create_department_comparison_chart(executive_report_benchmark))
 
         # -------------------------------------------------------------
-        # TAB 2: MATRIZ DE KARASEK (DEMANDA - CONTROL)
+        # TAB 3: MATRIZ DE KARASEK (DEMANDA - CONTROL)
         # -------------------------------------------------------------
-        with gr.TabItem("🎯 2. Matriz Demanda-Control (Karasek)"):
+        with gr.TabItem("🎯 3. Matriz Demanda-Control (Karasek)"):
             gr.Markdown(
                 """
                 ### Modelo Demanda-Control de Robert Karasek (Salud Ocupacional)
@@ -354,9 +628,9 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
             karasek_plot = gr.Plot(value=create_karasek_matrix_chart(executive_report_benchmark))
 
         # -------------------------------------------------------------
-        # TAB 3: SEGURIDAD PSICOLÓGICA (AMY EDMONDSON)
+        # TAB 4: SEGURIDAD PSICOLÓGICA (AMY EDMONDSON)
         # -------------------------------------------------------------
-        with gr.TabItem("🧠 3. Seguridad Psicológica (Amy Edmondson)"):
+        with gr.TabItem("🧠 4. Seguridad Psicológica (Amy Edmondson)"):
             with gr.Row():
                 with gr.Column(scale=1):
                     gr.Markdown(
@@ -373,7 +647,7 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
                 with gr.Column(scale=1):
                     gr.Markdown(
                         """
-                        ### 📈 Diagnóstico por Departamento (Benchmark)
+                        ### 📈 Diagnóstico por Departamento (Benchmark Base)
                         - **`AI-Research-Labs`:** Clima sobresaliente en seguridad psicológica (83.2/100). Alta admisión de errores y apertura a ideas.
                         - **`Engineering-Core`:** Tensión extrema por incidentes de producción (Burnout 72.8/100). El 55% de la comunicación ocurre en deshoras.
                         - **`Port-Logistics`:** Fricción interpersonal severa (62.4/100). Comunicación pasivo-agresiva ("como ya te había dicho").
@@ -382,9 +656,9 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
                     )
 
         # -------------------------------------------------------------
-        # TAB 4: INSPECTOR EN VIVO (PLAYGROUND ZERO-LEAKAGE)
+        # TAB 5: INSPECTOR EN VIVO (PLAYGROUND ZERO-LEAKAGE)
         # -------------------------------------------------------------
-        with gr.TabItem("🔬 4. Inspector en Vivo (Zero-Leakage Playground)"):
+        with gr.TabItem("🔬 5. Inspector en Vivo (Zero-Leakage Playground)"):
             gr.Markdown(
                 """
                 ### Prueba Interactiva: Pega cualquier texto confidencial de chat o correo
@@ -395,9 +669,9 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
             with gr.Row():
                 with gr.Column(scale=1):
                     input_text = gr.Textbox(
-                        label="Entrada de Texto Confidencial (Raw Chat)",
+                        label="Entrada de Texto Confidencial (Raw Chat o Acta)",
                         lines=5,
-                        placeholder="Ejemplo: Hola Carlos, llámame al 315 123 4567 o transfiere mi salario de $12.000.000 COP al banco. Se cayó el servidor en la IP 192.168.1.50 y estoy colapsando del estrés!",
+                        placeholder="Ejemplo: Hola Carlos, llámame al 315 123 4567 o transfiere mi salario de $12.000.000 COP al banco...",
                         value="URGENTE: Se cayó el servidor de pagos en la IP 10.0.1.45. Hola Carlos, llama al celular +57 312 456 7890 del cliente Banco Santander (CC 12345678). Estoy totalmente agotado con este sprint, no doy más!"
                     )
                     salt_input = gr.Textbox(
@@ -451,9 +725,9 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
             )
 
         # -------------------------------------------------------------
-        # TAB 5: DIRECTIVAS HR & RESOLUCIÓN 2764/2022
+        # TAB 6: DIRECTIVAS HR & RESOLUCIÓN 2764/2022
         # -------------------------------------------------------------
-        with gr.TabItem("📋 5. Directivas de Intervención (Res. 2764/2022)"):
+        with gr.TabItem("📋 6. Directivas HR & Marco Legal (Res. 2764/2022)"):
             gr.Markdown(
                 """
                 ### 🏛️ Marco Regulador: Resolución 2764/2022 & 2646/2008 (Ministerio del Trabajo de Colombia)
@@ -477,7 +751,7 @@ with gr.Blocks(title="Workplace-Pulse-Telemetry | Fabio Torres") as demo:
         """
         ---
         <div style="text-align: center; color: #94a3b8; font-size: 0.85rem;">
-            <b>Workplace-Pulse-Telemetry v1.0</b> • Creado por <b>Fabio Torres</b> (M.Sc. Data Engineering • Psicólogo Especialista en Riesgo Psicosocial)<br>
+            <b>Workplace-Pulse-Telemetry v2.0</b> • Creado por <b>Fabio Torres</b> (M.Sc. Data Engineering • Psicólogo Especialista en Riesgo Psicosocial)<br>
             Código abierto bajo licencia MIT en <a href="https://github.com/neurodeveloper11/workplace-pulse-telemetry" target="_blank" style="color: #38bdf8;">GitHub</a> • 
             Demostración en vivo en <a href="https://huggingface.co/spaces/neurodeveloper/workplace-pulse-telemetry" target="_blank" style="color: #38bdf8;">Hugging Face Spaces</a>
         </div>
